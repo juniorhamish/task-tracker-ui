@@ -5,6 +5,8 @@ describe('App', () => {
     it('Render', () => {
         render(<App/>);
 
-        expect(screen.getByRole('button')).toBeInTheDocument();
+        userEvent.click(screen.getByRole('button'));
+
+        expect(screen.getByRole('button')).toHaveText('One');
     });
 });
