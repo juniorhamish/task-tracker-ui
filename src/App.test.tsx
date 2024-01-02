@@ -7,6 +7,6 @@ describe('App', () => {
 
         userEvent.click(screen.getByRole('button'));
 
-        expect(screen.getByRole('button')).toHaveText('One');
+        expect(screen.getByRole('button')).toHaveText('count is 1');
     });
 });
