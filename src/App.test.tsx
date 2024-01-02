@@ -8,6 +8,6 @@ describe('App', () => {
 
         userEvent.click(screen.getByRole('button'));
 
-        expect(screen.getByRole('button')).toHaveText('count is 1');
+        expect(screen.getByRole('button', name: 'count is 1')).toBeInTheDocument();
     });
 });
