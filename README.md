@@ -1,3 +1,9 @@
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=juniorhamish_housework-ui&metric=coverage)](https://sonarcloud.io/summary/new_code?id=juniorhamish_housework-ui)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=juniorhamish_housework-ui&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=juniorhamish_housework-ui)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=juniorhamish_housework-ui&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=juniorhamish_housework-ui)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=juniorhamish_housework-ui&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=juniorhamish_housework-ui)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=juniorhamish_housework-ui&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=juniorhamish_housework-ui)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
