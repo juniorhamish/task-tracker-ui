@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
+import App from './app';
 
 describe('App', () => {
   it('Render', async () => {
