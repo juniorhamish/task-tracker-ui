@@ -12,22 +12,22 @@ module.exports = {
     'plugin:@typescript-eslint/stylistic-type-checked',
     'plugin:eslint-comments/recommended',
     'plugin:promise/recommended',
-    'plugin:unicorn/recommended',
     'plugin:prettier/recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['react-refresh', '@typescript-eslint', 'eslint-comments', 'unicorn', 'promise'],
+  plugins: ['react-refresh', '@typescript-eslint', 'eslint-comments', 'promise'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['**/*.test.{ts,tsx}', '**/*.test.helpers.{ts,tsx}'],
+        devDependencies: ['**/*.test.{ts,tsx}', '**/*.test.helpers.{ts,tsx}', '**/*.stories.{ts,tsx}'],
         optionalDependencies: false,
       },
     ],
