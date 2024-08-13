@@ -18,7 +18,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: ['./tsconfig.app.json'],
   },
   plugins: ['react-refresh', '@typescript-eslint', 'eslint-comments', 'unicorn', 'promise'],
   rules: {
