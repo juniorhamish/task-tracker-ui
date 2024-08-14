@@ -31,5 +31,6 @@ module.exports = {
         optionalDependencies: false,
       },
     ],
+    'react/require-default-props': ['off'],
   },
 };
