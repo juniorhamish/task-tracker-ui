@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import HoursOfOperationEditor from './HoursOfOperationEditor';
 
 const meta: Meta<typeof HoursOfOperationEditor> = {
@@ -16,5 +17,6 @@ export const Primary: Story = {
         end: '17:00',
       },
     },
+    onChange: fn(),
   },
 };
