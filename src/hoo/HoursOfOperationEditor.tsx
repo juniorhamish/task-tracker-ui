@@ -21,19 +21,15 @@ interface DayProps {
   onChange: (day: string, value?: HoursOfOperationDay) => void;
 }
 
-function TimeField({
-  label,
-  hour,
-  minute,
-  disabled,
-  onChange,
-}: {
+interface TimeFieldProps {
   label: string;
   hour: number;
   minute: number;
   disabled: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}) {
+}
+
+function TimeField({ label, hour, minute, disabled, onChange }: Readonly<TimeFieldProps>) {
   return (
     <TextField
       label={label}
@@ -44,7 +40,7 @@ function TimeField({
   );
 }
 
-function Day({ label, value, previousDay, onChange }: DayProps) {
+function Day({ label, value, previousDay, onChange }: Readonly<DayProps>) {
   return (
     <div>
       <FormControlLabel
@@ -106,13 +102,12 @@ function HoursOfOperationEditorReducer(state: HoursOfOperation, action: HoursOfO
   }
 }
 
-export default function HoursOfOperationEditor({
-  hoursOfOperation,
-  onChange,
-}: {
+interface HoursOfOperationEditorProps {
   hoursOfOperation: HoursOfOperation;
   onChange: (hoursOfOperation: HoursOfOperation) => void;
-}) {
+}
+
+export default function HoursOfOperationEditor({ hoursOfOperation, onChange }: Readonly<HoursOfOperationEditorProps>) {
   const [state, dispatch] = useReducer(HoursOfOperationEditorReducer, hoursOfOperation);
   const updateDay = (day: string, value?: HoursOfOperationDay) => {
     dispatch({ type: `update${day}`, payload: value });
