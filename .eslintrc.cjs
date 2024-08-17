@@ -18,7 +18,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.app.json',
   },
   plugins: ['react-refresh', '@typescript-eslint', 'eslint-comments', 'promise'],
   rules: {
@@ -27,7 +27,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['**/*.test.{ts,tsx}', '**/*.test.helpers.{ts,tsx}', '**/*.stories.{ts,tsx}'],
+        devDependencies: ['**/*.test.{ts,tsx}', '**/*.test.helpers.{ts,tsx}', '**/*.stories.{ts,tsx}', 'vitest-setup.ts'],
         optionalDependencies: false,
       },
     ],
