@@ -3,4 +3,3 @@ dist
 .eslintrc.cjs
 vitest.config.ts
 vite.config.ts
-vitest-setup.ts
