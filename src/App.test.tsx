@@ -4,7 +4,7 @@ import App from './App';
 
 describe('App', () => {
   it('Render', async () => {
-    render(<App />);
+    render(<App onCountUpdated={vi.fn()} heading="Test" />);
 
     await userEvent.click(screen.getByRole('button'));
 
