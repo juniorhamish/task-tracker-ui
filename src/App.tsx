@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
-import viteLogo from '../public/vite.svg';
+import viteLogo from './assets/vite.svg';
 import './App.css';
 
-function App() {
+function App({ onCountUpdated, heading }: { onCountUpdated: (count: number) => void; heading: string }) {
   const [count, setCount] = useState(0);
 
   return (
@@ -16,12 +16,13 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>{heading}</h1>
       <div className="card">
         <button
           type="button"
           onClick={() => {
             setCount((x) => x + 1);
+            onCountUpdated(count + 1);
           }}
         >
           count is {count}

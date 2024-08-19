@@ -9,7 +9,7 @@ const rootElement = document.querySelector('#root');
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <App heading="Vite + React" onCountUpdated={() => {}} />
       <SpeedInsights />
       <Analytics />
     </React.StrictMode>,
