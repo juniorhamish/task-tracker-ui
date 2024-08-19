@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2022: true },
+  env: { browser: true, es2023: true },
   extends: [
     'airbnb',
     'airbnb-typescript',
@@ -27,7 +27,12 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['**/*.test.{ts,tsx}', '**/*.test.helpers.{ts,tsx}', '**/*.stories.{ts,tsx}', 'vitest-setup.ts'],
+        devDependencies: [
+          '**/*.test.{ts,tsx}',
+          '**/*.test.helpers.{ts,tsx}',
+          '**/*.stories.{ts,tsx}',
+          'vitest-setup.ts',
+        ],
         optionalDependencies: false,
       },
     ],
