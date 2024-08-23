@@ -1,37 +1,69 @@
-import { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { AppBar, Button, Toolbar } from '@mui/material';
 import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
+import logo from './assets/logo.png';
 import './App.css';
 
-function App({ onCountUpdated, heading }: { onCountUpdated: (count: number) => void; heading: string }) {
-  const [count, setCount] = useState(0);
+function App() {
+  const { loginWithPopup, isAuthenticated, user, logout } = useAuth0();
 
+  if (!isAuthenticated || !user?.email_verified) {
+    return (
+      <>
+        <AppBar position="static">
+          <Toolbar>
+            <Button
+              color="inherit"
+              onClick={() => {
+                loginWithPopup()
+                  .then((value) => {
+                    return value;
+                  })
+                  .catch(() => {});
+              }}
+            >
+              Login
+            </Button>
+          </Toolbar>
+        </AppBar>
+        {user && !user.email_verified && <div>Please verify your email address.</div>}
+        <button
+          type="button"
+          onClick={() => {
+            loginWithPopup()
+              .then((value) => {
+                return value;
+              })
+              .catch(() => {});
+          }}
+        >
+          Log in
+        </button>
+      </>
+    );
+  }
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
+        <img src={logo} className="logo" alt="Vite logo" />
         <a href="https://react.dev" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>{heading}</h1>
+      <h2>{`${user.given_name ?? ''} ${user.family_name ?? ''}`}</h2>
+      <img src={user.picture} alt={user.name} className="logo react" />
       <div className="card">
         <button
           type="button"
           onClick={() => {
-            setCount((x) => x + 1);
-            onCountUpdated(count + 1);
+            logout()
+              .then((value) => value)
+              .catch(() => {});
           }}
         >
-          count is {count}
+          Logout
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
     </>
   );
 }
