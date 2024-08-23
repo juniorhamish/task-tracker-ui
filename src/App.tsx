@@ -27,18 +27,6 @@ function App() {
           </Toolbar>
         </AppBar>
         {user && !user.email_verified && <div>Please verify your email address.</div>}
-        <button
-          type="button"
-          onClick={() => {
-            loginWithPopup()
-              .then((value) => {
-                return value;
-              })
-              .catch(() => {});
-          }}
-        >
-          Log in
-        </button>
       </>
     );
   }
