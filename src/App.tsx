@@ -44,7 +44,7 @@ function App() {
         <button
           type="button"
           onClick={() => {
-            logout()
+            logout({ logoutParams: { returnTo: window.location.origin } })
               .then((value) => value)
               .catch(() => {});
           }}
