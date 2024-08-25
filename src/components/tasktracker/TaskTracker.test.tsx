@@ -3,44 +3,22 @@ import { vi } from 'vitest';
 import * as auth0 from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import mediaQuery from 'css-mediaquery';
-import App from './App';
-import { bannerButton } from './components/appbar/AppBar.test.helpers';
+import { bannerButton } from '../appbar/AppBar.test.helpers';
+import TaskTracker from './TaskTracker';
 
 vi.mock('@auth0/auth0-react');
 
-function createMatchMedia(scheme: string) {
-  return (query: string) => ({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    matches: mediaQuery.match(query, {
-      'prefers-color-scheme': scheme,
-    }),
-    addListener: () => {},
-    removeListener: () => {},
-  });
-}
-
-describe('App', () => {
-  beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    window.matchMedia = createMatchMedia('light');
-  });
+describe('TaskTracker', () => {
   afterEach(() => {
     vi.resetAllMocks();
   });
   it('should show a login button if not authenticated', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    window.matchMedia = createMatchMedia('dark');
     vi.mocked(auth0.useAuth0).mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<App />);
+    render(<TaskTracker />);
 
     expect(bannerButton('Login')).toBeVisible();
   });
@@ -51,7 +29,7 @@ describe('App', () => {
       user: { email_verified: true },
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<App />);
+    render(<TaskTracker />);
 
     expect(bannerButton('Logout')).toBeVisible();
   });
@@ -62,7 +40,7 @@ describe('App', () => {
       user: { email_verified: false },
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<App />);
+    render(<TaskTracker />);
 
     expect(screen.getByText('Please verify your email address.')).toBeVisible();
   });
@@ -73,7 +51,7 @@ describe('App', () => {
       loginWithPopup: vi.fn().mockResolvedValueOnce({}),
     } as unknown as auth0.Auth0ContextInterface);
     const { loginWithPopup } = useAuth0();
-    render(<App />);
+    render(<TaskTracker />);
 
     await userEvent.click(bannerButton('Login'));
 
@@ -85,7 +63,7 @@ describe('App', () => {
       isLoading: false,
       loginWithPopup: vi.fn().mockRejectedValueOnce({}),
     } as unknown as auth0.Auth0ContextInterface);
-    render(<App />);
+    render(<TaskTracker />);
 
     await userEvent.click(bannerButton('Login'));
 
@@ -99,7 +77,7 @@ describe('App', () => {
       user: { email_verified: true },
     } as unknown as auth0.Auth0ContextInterface);
     const { logout } = useAuth0();
-    render(<App />);
+    render(<TaskTracker />);
 
     await userEvent.click(bannerButton('Logout'));
 
@@ -112,7 +90,7 @@ describe('App', () => {
       logout: vi.fn().mockRejectedValueOnce({}),
       user: { email_verified: true },
     } as unknown as auth0.Auth0ContextInterface);
-    render(<App />);
+    render(<TaskTracker />);
 
     await userEvent.click(bannerButton('Logout'));
 
