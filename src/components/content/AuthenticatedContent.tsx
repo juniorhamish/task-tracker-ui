@@ -1,4 +1,4 @@
-interface User {
+export interface User {
   givenName?: string;
   familyName?: string;
   name?: string;
