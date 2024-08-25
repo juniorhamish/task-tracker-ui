@@ -25,5 +25,6 @@ dist-ssr
 *.sw?
 
 coverage
+reports
 
 *storybook.log

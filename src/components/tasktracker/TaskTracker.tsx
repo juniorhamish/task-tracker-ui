@@ -6,6 +6,12 @@ import AuthenticatedContent from '../content/AuthenticatedContent';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
+  const userDetails = {
+    givenName: user?.given_name,
+    familyName: user?.family_name,
+    name: user?.name,
+    picture: user?.picture,
+  };
   return (
     <Container maxWidth="lg" disableGutters component="main">
       <AppBar
@@ -19,14 +25,10 @@ export default function TaskTracker() {
             .then(() => true)
             .catch(() => {});
         }}
-        isAuthenticated={isAuthenticated}
+        user={isAuthenticated ? userDetails : undefined}
       />
       {isAuthenticated && !user?.email_verified && <UnverifiedUser />}
-      {isAuthenticated && user?.email_verified && (
-        <AuthenticatedContent
-          user={{ givenName: user.given_name, familyName: user.family_name, name: user.name, picture: user.picture }}
-        />
-      )}
+      {isAuthenticated && user?.email_verified && <AuthenticatedContent user={userDetails} />}
       <Backdrop open={isLoading}>
         <CircularProgress />
       </Backdrop>
