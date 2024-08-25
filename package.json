@@ -47,7 +47,6 @@
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/ui": "^2.0.5",
     "chromatic": "^11.7.1",
-    "css-mediaquery": "^0.1.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
