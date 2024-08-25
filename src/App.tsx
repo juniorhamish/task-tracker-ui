@@ -16,15 +16,13 @@ import AppBar from './components/appbar/AppBar';
 function App() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode],
-  );
+  const theme = useMemo(() => {
+    return createTheme({
+      palette: {
+        mode: prefersDarkMode ? 'dark' : 'light',
+      },
+    });
+  }, [prefersDarkMode]);
 
   return (
     <ThemeProvider theme={theme}>
