@@ -25,7 +25,7 @@ export default function TaskTracker() {
             .then(() => true)
             .catch(() => {});
         }}
-        user={userDetails}
+        user={isAuthenticated ? userDetails : undefined}
       />
       {isAuthenticated && !user?.email_verified && <UnverifiedUser />}
       {isAuthenticated && user?.email_verified && <AuthenticatedContent user={userDetails} />}
