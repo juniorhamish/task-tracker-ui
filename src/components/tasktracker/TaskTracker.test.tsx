@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
 import * as auth0 from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
-import { bannerButton } from '../appbar/AppBar.test.helpers';
+import { banner, bannerButton } from '../appbar/AppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 
 vi.mock('@auth0/auth0-react');
@@ -22,16 +22,16 @@ describe('TaskTracker', () => {
 
     expect(bannerButton('Login')).toBeVisible();
   });
-  it('should show a logout button if user authenticated', () => {
+  it('should the user avatar if user authenticated', () => {
     vi.mocked(auth0.useAuth0).mockReturnValue({
       isAuthenticated: true,
       isLoading: false,
-      user: { email_verified: true },
+      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
 
     render(<TaskTracker />);
 
-    expect(bannerButton('Logout')).toBeVisible();
+    expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
   it('should show a message if user authenticated and email not verified', () => {
     vi.mocked(auth0.useAuth0).mockReturnValue({
@@ -74,26 +74,28 @@ describe('TaskTracker', () => {
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockResolvedValueOnce({}),
-      user: { email_verified: true },
+      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
     const { logout } = useAuth0();
     render(<TaskTracker />);
 
-    await userEvent.click(bannerButton('Logout'));
+    await userEvent.click(within(banner()).getByAltText('UserName'));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
     expect(logout).toHaveBeenCalledOnce();
   });
-  it('should display the Logout button if the logout flow fails', async () => {
+  it('should remain authenticated if the logout flow fails', async () => {
     vi.mocked(auth0.useAuth0).mockReturnValue({
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockRejectedValueOnce({}),
-      user: { email_verified: true },
+      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
     render(<TaskTracker />);
 
-    await userEvent.click(bannerButton('Logout'));
+    await userEvent.click(within(banner()).getByAltText('UserName'));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
-    expect(bannerButton('Logout')).toBeVisible();
+    expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
 });

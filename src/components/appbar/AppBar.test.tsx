@@ -1,4 +1,4 @@
-import { render, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import AppBar from './AppBar';
 import { banner, bannerButton } from './AppBar.test.helpers';
@@ -8,24 +8,30 @@ describe('AppBar', () => {
     render(<AppBar onLogin={vi.fn()} onLogout={vi.fn()} />);
 
     expect(bannerButton('Login')).toBeVisible();
-    expect(within(banner()).queryByRole('button', { name: 'Logout' })).not.toBeInTheDocument();
   });
-  it('should display the user avatar', () => {
+  it('should not display a Login button when authenticated', () => {
+    render(<AppBar onLogin={vi.fn()} onLogout={vi.fn()} user={{}} />);
+
+    expect(within(banner()).queryByRole('button', { name: 'Login' })).not.toBeInTheDocument();
+  });
+  it('should display the user avatar when authenticated', () => {
     render(
       <AppBar
         onLogin={vi.fn()}
         onLogout={vi.fn()}
-        user={{ name: 'UserName', picture: 'https://gravatar.com/juniorhamish' }}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
       />,
     );
 
-    expect(within(banner()).getByAltText('UserName')).toBeVisible();
-  });
-  it('should display a Logout button when authenticated', () => {
-    render(<AppBar onLogin={vi.fn()} onLogout={vi.fn()} user={{}} />);
-
-    expect(bannerButton('Logout')).toBeVisible();
-    expect(within(banner()).queryByRole('button', { name: 'Login' })).not.toBeInTheDocument();
+    const avatar = within(banner()).getByAltText('UserName');
+    expect(avatar).toBeVisible();
+    expect(avatar).toHaveAttribute(
+      'src',
+      'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+    );
   });
   it('should invoke the onLogin callback when the Login button is clicked', async () => {
     const onLogin = vi.fn();
@@ -39,10 +45,38 @@ describe('AppBar', () => {
   it('should invoke the onLogout callback when the Logout button is clicked', async () => {
     const onLogout = vi.fn();
     const user = userEvent.setup();
-    render(<AppBar onLogin={vi.fn()} onLogout={onLogout} user={{}} />);
+    render(
+      <AppBar
+        onLogin={vi.fn()}
+        onLogout={onLogout}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
+      />,
+    );
 
-    await user.click(bannerButton('Logout'));
+    await user.click(within(banner()).getByAltText('UserName'));
+    await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
 
     expect(onLogout).toHaveBeenCalledOnce();
+  });
+  it('should close the user menu when the Logout button is clicked', async () => {
+    const user = userEvent.setup();
+    render(
+      <AppBar
+        onLogin={vi.fn()}
+        onLogout={vi.fn()}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
+      />,
+    );
+
+    await user.click(within(banner()).getByAltText('UserName'));
+    await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
+
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 });
