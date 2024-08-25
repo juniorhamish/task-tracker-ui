@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="3.283">
+    <testsuite name="src/components/appbar/AppBar.test.tsx" timestamp="2024-08-25T19:43:02.874Z" hostname="Davids-MacBook-Pro-3.local" tests="5" failures="0" errors="0" skipped="0" time="0.239">
+        <testcase classname="src/components/appbar/AppBar.test.tsx" name="AppBar &gt; should display a Login button when not authenticated" time="0.116">
+        </testcase>
+        <testcase classname="src/components/appbar/AppBar.test.tsx" name="AppBar &gt; should display the user avatar" time="0.02">
+        </testcase>
+        <testcase classname="src/components/appbar/AppBar.test.tsx" name="AppBar &gt; should display a Logout button when authenticated" time="0.021">
+        </testcase>
+        <testcase classname="src/components/appbar/AppBar.test.tsx" name="AppBar &gt; should invoke the onLogin callback when the Login button is clicked" time="0.046">
+        </testcase>
+        <testcase classname="src/components/appbar/AppBar.test.tsx" name="AppBar &gt; should invoke the onLogout callback when the Logout button is clicked" time="0.035">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/tasktracker/TaskTracker.test.tsx" timestamp="2024-08-25T19:43:02.877Z" hostname="Davids-MacBook-Pro-3.local" tests="7" failures="0" errors="0" skipped="0" time="0.361">
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should show a login button if not authenticated" time="0.129">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should show a logout button if user authenticated" time="0.025">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should show a message if user authenticated and email not verified" time="0.012">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should invoke the loginWithPopup flow when login is clicked" time="0.055">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should show the Login button when loginWithPopup fails" time="0.05">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should invoke the logout flow when Logout is clicked" time="0.04">
+        </testcase>
+        <testcase classname="src/components/tasktracker/TaskTracker.test.tsx" name="TaskTracker &gt; should display the Logout button if the logout flow fails" time="0.049">
+        </testcase>
+    </testsuite>
+</testsuites>
