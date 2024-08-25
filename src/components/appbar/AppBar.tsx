@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
 import { User } from '../content/AuthenticatedContent';
 
@@ -20,6 +20,7 @@ interface Props {
 }
 
 export default function AppBar({ onLogin, onLogout, user }: Props) {
+  const userMenuId = useId();
   const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
   const closeUserMenu = () => {
     setUserMenuAnchorElement(null);
@@ -43,10 +44,13 @@ export default function AppBar({ onLogin, onLogout, user }: Props) {
               onClick={(event) => {
                 setUserMenuAnchorElement(event.currentTarget);
               }}
+              aria-haspopup
+              aria-controls={userMenuId}
             >
               <Avatar src={user.picture} alt={user.name} />
             </IconButton>
             <Menu
+              id={userMenuId}
               sx={{ mt: '45px' }}
               open={Boolean(userMenuAnchorElement)}
               anchorEl={userMenuAnchorElement}
