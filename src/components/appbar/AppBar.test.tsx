@@ -19,13 +19,19 @@ describe('AppBar', () => {
       <AppBar
         onLogin={vi.fn()}
         onLogout={vi.fn()}
-        user={{ name: 'UserName', picture: 'https://gravatar.com/juniorhamish' }}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
       />,
     );
 
     const avatar = within(banner()).getByAltText('UserName');
     expect(avatar).toBeVisible();
-    expect(avatar).toHaveAttribute('src', 'https://gravatar.com/juniorhamish');
+    expect(avatar).toHaveAttribute(
+      'src',
+      'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+    );
   });
   it('should invoke the onLogin callback when the Login button is clicked', async () => {
     const onLogin = vi.fn();
@@ -43,7 +49,10 @@ describe('AppBar', () => {
       <AppBar
         onLogin={vi.fn()}
         onLogout={onLogout}
-        user={{ name: 'UserName', picture: 'https://gravatar.com/juniorhamish' }}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
       />,
     );
 
@@ -58,7 +67,10 @@ describe('AppBar', () => {
       <AppBar
         onLogin={vi.fn()}
         onLogout={vi.fn()}
-        user={{ name: 'UserName', picture: 'https://gravatar.com/juniorhamish' }}
+        user={{
+          name: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
       />,
     );
 
