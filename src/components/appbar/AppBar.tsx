@@ -20,7 +20,10 @@ interface Props {
 }
 
 export default function AppBar({ onLogin, onLogout, user }: Props) {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
+  const closeUserMenu = () => {
+    setUserMenuAnchorElement(null);
+  };
   return (
     <MuiAppBar position="static">
       <Toolbar disableGutters sx={{ p: 1 }}>
@@ -38,15 +41,15 @@ export default function AppBar({ onLogin, onLogout, user }: Props) {
             <IconButton
               sx={{ p: 0 }}
               onClick={(event) => {
-                setAnchorElUser(event.currentTarget);
+                setUserMenuAnchorElement(event.currentTarget);
               }}
             >
               <Avatar src={user.picture} alt={user.name} />
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
-              open={!!anchorElUser}
-              anchorEl={anchorElUser}
+              open={Boolean(userMenuAnchorElement)}
+              anchorEl={userMenuAnchorElement}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -56,11 +59,14 @@ export default function AppBar({ onLogin, onLogout, user }: Props) {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              onClose={() => {
-                setAnchorElUser(null);
-              }}
+              onClose={closeUserMenu}
             >
-              <MenuItem onClick={onLogout}>
+              <MenuItem
+                onClick={() => {
+                  onLogout();
+                  closeUserMenu();
+                }}
+              >
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>

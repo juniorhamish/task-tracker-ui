@@ -52,4 +52,19 @@ describe('AppBar', () => {
 
     expect(onLogout).toHaveBeenCalledOnce();
   });
+  it('should close the user menu when the Logout button is clicked', async () => {
+    const user = userEvent.setup();
+    render(
+      <AppBar
+        onLogin={vi.fn()}
+        onLogout={vi.fn()}
+        user={{ name: 'UserName', picture: 'https://gravatar.com/juniorhamish' }}
+      />,
+    );
+
+    await user.click(within(banner()).getByAltText('UserName'));
+    await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
+
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
 });
