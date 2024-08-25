@@ -13,6 +13,8 @@ if (rootElement) {
       domain="dajohnston.eu.auth0.com"
       clientId="JtOVDaDEeSOT7HAaBt0tLBFJvb5g7tyh"
       authorizationParams={{ redirect_uri: window.location.origin }}
+      cacheLocation="localstorage"
+      useRefreshTokens
     >
       <React.StrictMode>
         <App />
