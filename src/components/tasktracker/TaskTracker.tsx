@@ -7,7 +7,7 @@ import AuthenticatedContent from '../content/AuthenticatedContent';
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
   return (
-    <Container maxWidth="lg" disableGutters>
+    <Container maxWidth="lg" disableGutters component="main">
       <AppBar
         onLogin={() => {
           loginWithPopup()
