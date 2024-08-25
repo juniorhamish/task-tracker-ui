@@ -21,12 +21,12 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
+    "@react-buddy/ide-toolbox": "^2.4.0",
+    "@react-buddy/palette-mui": "^5.0.1",
     "@vercel/analytics": "^1.3.1",
     "@vercel/speed-insights": "^1.0.12",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@react-buddy/ide-toolbox": "^2.4.0",
-    "@react-buddy/palette-mui": "^5.0.1"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -47,6 +47,7 @@
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/ui": "^2.0.5",
     "chromatic": "^11.7.1",
+    "css-mediaquery": "^0.1.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -63,6 +64,7 @@
     "jsdom": "^24.1.1",
     "prettier": "3.3.3",
     "storybook": "^8.2.9",
+    "storybook-addon-deep-controls": "^0.7.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "vitest": "^2.0.5"

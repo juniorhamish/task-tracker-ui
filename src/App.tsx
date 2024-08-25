@@ -1,58 +1,57 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { AppBar, Button, Toolbar } from '@mui/material';
-import reactLogo from './assets/react.svg';
-import logo from './assets/logo.png';
-import './App.css';
+import {
+  Backdrop,
+  CircularProgress,
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+  useMediaQuery,
+} from '@mui/material';
+import { useMemo } from 'react';
+import AuthenticatedContent from './components/content/AuthenticatedContent';
+import UnverifiedUser from './components/unverified/UnverifiedUser';
+import AppBar from './components/appbar/AppBar';
 
 function App() {
-  const { loginWithPopup, isAuthenticated, user, logout } = useAuth0();
+  const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = useMemo(() => {
+    return createTheme({
+      palette: {
+        mode: prefersDarkMode ? 'dark' : 'light',
+      },
+    });
+  }, [prefersDarkMode]);
 
-  if (!isAuthenticated || !user?.email_verified) {
-    return (
-      <>
-        <AppBar position="static">
-          <Toolbar>
-            <Button
-              color="inherit"
-              onClick={() => {
-                loginWithPopup()
-                  .then((value) => {
-                    return value;
-                  })
-                  .catch(() => {});
-              }}
-            >
-              Login
-            </Button>
-          </Toolbar>
-        </AppBar>
-        {user && !user.email_verified && <div>Please verify your email address.</div>}
-      </>
-    );
-  }
   return (
-    <>
-      <div>
-        <img src={logo} className="logo" alt="Vite logo" />
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h2>{`${user.given_name ?? ''} ${user.family_name ?? ''}`}</h2>
-      <img src={user.picture} alt={user.name} className="logo react" />
-      <div className="card">
-        <button
-          type="button"
-          onClick={() => {
-            logout({ logoutParams: { returnTo: window.location.origin } })
-              .then((value) => value)
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <AppBar
+          onLogin={() => {
+            loginWithPopup()
+              .then(() => true)
               .catch(() => {});
           }}
-        >
-          Logout
-        </button>
-      </div>
-    </>
+          onLogout={() => {
+            logout({ logoutParams: { returnTo: window.location.origin } })
+              .then(() => true)
+              .catch(() => {});
+          }}
+          isAuthenticated={isAuthenticated}
+        />
+        {isAuthenticated && !user?.email_verified && <UnverifiedUser />}
+        {isAuthenticated && user?.email_verified && (
+          <AuthenticatedContent
+            user={{ givenName: user.given_name, familyName: user.family_name, name: user.name, picture: user.picture }}
+          />
+        )}
+        <Backdrop open={isLoading}>
+          <CircularProgress />
+        </Backdrop>
+      </Container>
+    </ThemeProvider>
   );
 }
 
