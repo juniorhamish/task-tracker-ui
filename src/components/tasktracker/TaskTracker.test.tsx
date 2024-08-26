@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 import * as auth0 from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 import { banner, bannerButton } from '../appbar/AppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 
@@ -18,7 +19,11 @@ describe('TaskTracker', () => {
       isLoading: false,
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     expect(bannerButton('Login')).toBeVisible();
   });
@@ -29,7 +34,11 @@ describe('TaskTracker', () => {
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
@@ -40,7 +49,11 @@ describe('TaskTracker', () => {
       user: { email_verified: false },
     } as unknown as auth0.Auth0ContextInterface);
 
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     expect(screen.getByText('Please verify your email address.')).toBeVisible();
   });
@@ -51,7 +64,11 @@ describe('TaskTracker', () => {
       loginWithPopup: vi.fn().mockResolvedValueOnce({}),
     } as unknown as auth0.Auth0ContextInterface);
     const { loginWithPopup } = useAuth0();
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     await userEvent.click(bannerButton('Login'));
 
@@ -63,7 +80,11 @@ describe('TaskTracker', () => {
       isLoading: false,
       loginWithPopup: vi.fn().mockRejectedValueOnce({}),
     } as unknown as auth0.Auth0ContextInterface);
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     await userEvent.click(bannerButton('Login'));
 
@@ -77,7 +98,11 @@ describe('TaskTracker', () => {
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
     const { logout } = useAuth0();
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     await userEvent.click(within(banner()).getByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
@@ -91,7 +116,11 @@ describe('TaskTracker', () => {
       logout: vi.fn().mockRejectedValueOnce({}),
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
     } as unknown as auth0.Auth0ContextInterface);
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     await userEvent.click(within(banner()).getByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
@@ -103,7 +132,11 @@ describe('TaskTracker', () => {
       isAuthenticated: false,
       isLoading: true,
     } as unknown as auth0.Auth0ContextInterface);
-    render(<TaskTracker />);
+    render(
+      <BrowserRouter>
+        <TaskTracker />
+      </BrowserRouter>,
+    );
 
     expect(screen.getByRole('progressbar')).toBeVisible();
   });
