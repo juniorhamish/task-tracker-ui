@@ -1,8 +1,10 @@
 import { Backdrop, CircularProgress, Container } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Route, Routes } from 'react-router-dom';
 import AppBar from '../appbar/AppBar';
 import UnverifiedUser from '../unverified/UnverifiedUser';
 import AuthenticatedContent from '../content/AuthenticatedContent';
+import Welcome from '../welcome/Welcome';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
@@ -27,8 +29,11 @@ export default function TaskTracker() {
         }}
         user={isAuthenticated ? userDetails : undefined}
       />
-      {isAuthenticated && !user?.email_verified && <UnverifiedUser />}
-      {isAuthenticated && user?.email_verified && <AuthenticatedContent user={userDetails} />}
+      <Routes>
+        <Route path="/home" element={<AuthenticatedContent />} />
+        <Route path="/verify" element={<UnverifiedUser />} />
+        <Route path="/" element={<Welcome />} />
+      </Routes>
       <Backdrop open={isLoading} aria-hidden={!isLoading}>
         <CircularProgress />
       </Backdrop>
