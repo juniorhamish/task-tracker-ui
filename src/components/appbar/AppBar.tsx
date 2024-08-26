@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
-import { User } from '../content/AuthenticatedContent';
+import { User } from '../../common/types';
 
 interface Props {
   onLogin: () => void;
