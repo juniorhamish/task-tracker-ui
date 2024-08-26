@@ -98,4 +98,13 @@ describe('TaskTracker', () => {
 
     expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
+  it('should show a spinner while the login flow is in progress', () => {
+    vi.mocked(auth0.useAuth0).mockReturnValue({
+      isAuthenticated: false,
+      isLoading: true,
+    } as unknown as auth0.Auth0ContextInterface);
+    render(<TaskTracker />);
+
+    expect(screen.getByRole('progressbar')).toBeVisible();
+  });
 });

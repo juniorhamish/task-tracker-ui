@@ -29,7 +29,7 @@ export default function TaskTracker() {
       />
       {isAuthenticated && !user?.email_verified && <UnverifiedUser />}
       {isAuthenticated && user?.email_verified && <AuthenticatedContent user={userDetails} />}
-      <Backdrop open={isLoading}>
+      <Backdrop open={isLoading} aria-hidden={!isLoading}>
         <CircularProgress />
       </Backdrop>
     </Container>
