@@ -15,7 +15,12 @@ export default function TaskTracker() {
     picture: user?.picture,
   };
   return (
-    <Container maxWidth="lg" disableGutters component="main">
+    <Container
+      maxWidth="lg"
+      disableGutters
+      component="main"
+      sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
+    >
       <AppBar
         onLogin={() => {
           loginWithPopup()

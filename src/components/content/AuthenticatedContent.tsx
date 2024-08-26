@@ -14,18 +14,11 @@ export default function AuthenticatedContent() {
     return <Navigate to="/verify" />;
   }
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      alignContent="center"
-      justifyContent="center"
-      justifyItems="center"
-    >
-      <Grid item xs={3}>
+    <Grid container alignContent="center" justifyContent="center" flexGrow={1}>
+      <Grid item>
         <Card variant="outlined">
           <CardMedia component="img" height="194" image={user.picture} />
-          <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <CardContent>
             <Typography variant="h4" gutterBottom>
               {`${user.given_name ?? ''} ${user.family_name ?? ''} ${user.name ?? ''} ${user.nickname ?? ''}`}
             </Typography>

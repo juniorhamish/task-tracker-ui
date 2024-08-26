@@ -11,15 +11,7 @@ export default function Welcome() {
     return <Navigate to="/home" />;
   }
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      alignContent="center"
-      justifyContent="center"
-      justifyItems="center"
-      sx={{ minHeight: '100vh' }}
-    >
+    <Grid container alignContent="center" justifyContent="center" flexGrow={1}>
       <Card variant="outlined">
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant="h4" gutterBottom>
