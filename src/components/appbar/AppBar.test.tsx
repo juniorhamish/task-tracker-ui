@@ -40,7 +40,7 @@ describe('AppBar', () => {
 
     await user.click(bannerButton('Login'));
 
-    expect(onLogin).toHaveBeenCalledOnce();
+    expect(onLogin).toHaveBeenCalledWith();
   });
   it('should invoke the onLogout callback when the Logout button is clicked', async () => {
     const onLogout = vi.fn();
@@ -59,7 +59,7 @@ describe('AppBar', () => {
     await user.click(within(banner()).getByAltText('UserName'));
     await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
 
-    expect(onLogout).toHaveBeenCalledOnce();
+    expect(onLogout).toHaveBeenCalledWith();
   });
   it('should close the user menu when the Logout button is clicked', async () => {
     const user = userEvent.setup();
