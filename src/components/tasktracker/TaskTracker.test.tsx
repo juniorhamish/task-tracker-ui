@@ -3,14 +3,15 @@ import { expect, vi } from 'vitest';
 import * as auth0 from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { ReactNode } from 'react';
 import { banner, bannerButton } from '../appbar/AppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 
 vi.mock('@auth0/auth0-react');
 
-const renderWithRouter = (children: ReactNode) => render(<BrowserRouter>{children}</BrowserRouter>);
+const renderWithRouter = (children: ReactNode, route?: string) =>
+  render(<MemoryRouter initialEntries={route ? [route] : undefined}>{children}</MemoryRouter>);
 const mockAuth0 = (response: Partial<auth0.Auth0ContextInterface>) => {
   vi.mocked(auth0.useAuth0).mockReturnValue(response as auth0.Auth0ContextInterface);
 };
@@ -133,5 +134,43 @@ describe('TaskTracker', () => {
     renderWithRouter(<TaskTracker />);
 
     expect(screen.getByText(/Dave/)).toBeVisible();
+  });
+  it('should show the welcome screen if an unauthenticated user navigates directly to the verify screen', () => {
+    mockAuth0({
+      isAuthenticated: false,
+      isLoading: false,
+    });
+    renderWithRouter(<TaskTracker />, '/verify');
+
+    expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+  });
+  it('should show the authenticated screen if a verified user navigates directly to the verify screen', () => {
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true, given_name: 'Dave' },
+    });
+    renderWithRouter(<TaskTracker />, '/verify');
+
+    expect(screen.getByText(/Dave/)).toBeVisible();
+  });
+  it('should show the welcome screen if an unauthenticated user navigates directly to the home screen', () => {
+    mockAuth0({
+      isAuthenticated: false,
+      isLoading: false,
+    });
+    renderWithRouter(<TaskTracker />, '/home');
+
+    expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+  });
+  it('should show the verify screen if an unverified user navigates directly to the home screen', () => {
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: false },
+    });
+    renderWithRouter(<TaskTracker />, '/home');
+
+    expect(screen.getByText('Please verify your email address.')).toBeVisible();
   });
 });
