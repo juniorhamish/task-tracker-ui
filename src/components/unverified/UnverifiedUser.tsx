@@ -1,9 +1,12 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { User } from '../../common/types';
 
-export default function UnverifiedUser() {
-  const { user } = useAuth0();
+interface Props {
+  user?: User;
+}
+
+export default function UnverifiedUser({ user }: Props) {
   if (!user || user.email_verified) {
     return <Navigate to="/" />;
   }

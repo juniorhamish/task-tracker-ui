@@ -1,9 +1,12 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import { User } from '../../common/types';
 
-export default function AuthenticatedContent() {
-  const { user } = useAuth0();
+interface Props {
+  user?: User;
+}
+
+export default function AuthenticatedContent({ user }: Props) {
   if (!user) {
     return <Navigate to="/" />;
   }
