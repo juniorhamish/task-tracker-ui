@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { ReactNode } from 'react';
-import { banner, bannerButton } from '../appbar/AppBar.test.helpers';
+import { banner, bannerButton } from '../topappbar/TopAppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 
 vi.mock('@auth0/auth0-react');

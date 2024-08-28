@@ -1,7 +1,7 @@
 import { Backdrop, CircularProgress, Container } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Route, Routes } from 'react-router-dom';
-import AppBar from '../appbar/AppBar';
+import TopAppBar from '../topappbar/TopAppBar';
 import UnverifiedUser from '../unverified/UnverifiedUser';
 import AuthenticatedContent from '../content/AuthenticatedContent';
 import Welcome from '../welcome/Welcome';
@@ -22,7 +22,7 @@ export default function TaskTracker() {
       component="main"
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
-      <AppBar
+      <TopAppBar
         onLogin={() => {
           loginWithPopup()
             .then(() => true)

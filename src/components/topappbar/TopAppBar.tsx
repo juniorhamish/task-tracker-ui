@@ -1,14 +1,4 @@
-import {
-  AppBar as MuiAppBar,
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
 import { User } from '../../common/types';
@@ -19,14 +9,14 @@ interface Props {
   user?: User;
 }
 
-export default function AppBar({ onLogin, onLogout, user }: Props) {
+export default function TopAppBar({ onLogin, onLogout, user }: Props) {
   const userMenuId = useId();
   const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
   const closeUserMenu = () => {
     setUserMenuAnchorElement(null);
   };
   return (
-    <MuiAppBar position="static">
+    <AppBar position="static" enableColorOnDark>
       <Toolbar disableGutters sx={{ p: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="Task Tracker logo" />
@@ -82,6 +72,6 @@ export default function AppBar({ onLogin, onLogout, user }: Props) {
           </Box>
         )}
       </Toolbar>
-    </MuiAppBar>
+    </AppBar>
   );
 }
