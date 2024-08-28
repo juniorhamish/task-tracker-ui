@@ -34,11 +34,13 @@ export default function TaskTracker() {
         }}
         user={isAuthenticated ? userDetails : undefined}
       />
-      <Routes>
-        <Route path="/home" element={<AuthenticatedContent />} />
-        <Route path="/verify" element={<UnverifiedUser />} />
-        <Route path="/" element={<Welcome />} />
-      </Routes>
+      {!isLoading && (
+        <Routes>
+          <Route path="/home" element={<AuthenticatedContent />} />
+          <Route path="/verify" element={<UnverifiedUser />} />
+          <Route path="/" element={<Welcome />} />
+        </Routes>
+      )}
       <Backdrop open={isLoading} aria-hidden={!isLoading}>
         <CircularProgress />
       </Backdrop>

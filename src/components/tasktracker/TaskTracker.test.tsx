@@ -1,108 +1,90 @@
 import { render, screen, within } from '@testing-library/react';
-import { vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import * as auth0 from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
+import { ReactNode } from 'react';
 import { banner, bannerButton } from '../appbar/AppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 
 vi.mock('@auth0/auth0-react');
+
+const renderWithRouter = (children: ReactNode) => render(<BrowserRouter>{children}</BrowserRouter>);
+const mockAuth0 = (response: Partial<auth0.Auth0ContextInterface>) => {
+  vi.mocked(auth0.useAuth0).mockReturnValue(response as auth0.Auth0ContextInterface);
+};
 
 describe('TaskTracker', () => {
   afterEach(() => {
     vi.resetAllMocks();
   });
   it('should show a login button if not authenticated', () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: false,
       isLoading: false,
-    } as unknown as auth0.Auth0ContextInterface);
+    });
 
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    renderWithRouter(<TaskTracker />);
 
     expect(bannerButton('Login')).toBeVisible();
   });
-  it('should the user avatar if user authenticated', () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+  it('should show the user avatar if user authenticated', () => {
+    mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
-    } as unknown as auth0.Auth0ContextInterface);
+    });
 
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    renderWithRouter(<TaskTracker />);
 
     expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
   it('should show a message if user authenticated and email not verified', () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       user: { email_verified: false },
-    } as unknown as auth0.Auth0ContextInterface);
+    });
 
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    renderWithRouter(<TaskTracker />);
 
     expect(screen.getByText('Please verify your email address.')).toBeVisible();
   });
   it('should invoke the loginWithPopup flow when login is clicked', async () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: false,
       isLoading: false,
       loginWithPopup: vi.fn().mockResolvedValueOnce({}),
-    } as unknown as auth0.Auth0ContextInterface);
+    });
     const { loginWithPopup } = useAuth0();
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    renderWithRouter(<TaskTracker />);
 
     await userEvent.click(bannerButton('Login'));
 
     expect(loginWithPopup).toHaveBeenCalledOnce();
   });
   it('should show the Login button when loginWithPopup fails', async () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: false,
       isLoading: false,
       loginWithPopup: vi.fn().mockRejectedValueOnce({}),
-    } as unknown as auth0.Auth0ContextInterface);
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    });
+    renderWithRouter(<TaskTracker />);
 
     await userEvent.click(bannerButton('Login'));
 
     expect(bannerButton('Login')).toBeVisible();
   });
   it('should invoke the logout flow when Logout is clicked', async () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockResolvedValueOnce({}),
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
-    } as unknown as auth0.Auth0ContextInterface);
+    });
     const { logout } = useAuth0();
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    renderWithRouter(<TaskTracker />);
 
     await userEvent.click(within(banner()).getByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
@@ -110,17 +92,13 @@ describe('TaskTracker', () => {
     expect(logout).toHaveBeenCalledOnce();
   });
   it('should remain authenticated if the logout flow fails', async () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockRejectedValueOnce({}),
       user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
-    } as unknown as auth0.Auth0ContextInterface);
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    });
+    renderWithRouter(<TaskTracker />);
 
     await userEvent.click(within(banner()).getByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
@@ -128,16 +106,32 @@ describe('TaskTracker', () => {
     expect(within(banner()).getByAltText('UserName')).toBeVisible();
   });
   it('should show a spinner while the login flow is in progress', () => {
-    vi.mocked(auth0.useAuth0).mockReturnValue({
+    mockAuth0({
       isAuthenticated: false,
       isLoading: true,
-    } as unknown as auth0.Auth0ContextInterface);
-    render(
-      <BrowserRouter>
-        <TaskTracker />
-      </BrowserRouter>,
-    );
+    });
+    renderWithRouter(<TaskTracker />);
 
     expect(screen.getByRole('progressbar')).toBeVisible();
+  });
+  it('should show the welcome screen if the user is not logged in', () => {
+    mockAuth0({
+      isAuthenticated: false,
+      isLoading: false,
+    });
+    renderWithRouter(<TaskTracker />);
+
+    expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+    expect(screen.getByText('Please log in or sign up!')).toBeVisible();
+  });
+  it('should show the authenticated screen if the user is logged in', () => {
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true, given_name: 'Dave' },
+    });
+    renderWithRouter(<TaskTracker />);
+
+    expect(screen.getByText(/Dave/)).toBeVisible();
   });
 });

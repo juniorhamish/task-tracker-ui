@@ -3,10 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
 export default function AuthenticatedContent() {
-  const { user, isLoading } = useAuth0();
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { user } = useAuth0();
   if (!user) {
     return <Navigate to="/" />;
   }

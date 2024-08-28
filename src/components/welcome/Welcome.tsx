@@ -3,10 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate } from 'react-router-dom';
 
 export default function Welcome() {
-  const { isLoading, user, isAuthenticated } = useAuth0();
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { user, isAuthenticated } = useAuth0();
   if (isAuthenticated && user) {
     return <Navigate to="/home" />;
   }
