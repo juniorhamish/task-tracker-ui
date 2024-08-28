@@ -20,7 +20,7 @@ export default function TaskTracker() {
       maxWidth="lg"
       disableGutters
       component="main"
-      sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
+      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <AppBar
         onLogin={() => {
