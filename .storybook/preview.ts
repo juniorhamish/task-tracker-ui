@@ -1,6 +1,8 @@
 import type { Preview } from '@storybook/react';
+import { withRouter } from 'storybook-addon-remix-react-router';
 
 const preview: Preview = {
+  decorators: [withRouter],
   parameters: {
     backgrounds: {
       values: [

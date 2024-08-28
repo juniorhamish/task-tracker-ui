@@ -33,7 +33,12 @@ export default function AppBar({ onLogin, onLogout, user }: Props) {
         </Box>
         {!user ? (
           <Box>
-            <Button color="inherit" onClick={onLogin}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                onLogin();
+              }}
+            >
               Login
             </Button>
           </Box>
