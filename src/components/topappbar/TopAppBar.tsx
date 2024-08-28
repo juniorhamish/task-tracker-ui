@@ -16,7 +16,7 @@ export default function TopAppBar({ onLogin, onLogout, user }: Props) {
     setUserMenuAnchorElement(null);
   };
   return (
-    <AppBar position="static">
+    <AppBar position="static" enableColorOnDark>
       <Toolbar disableGutters sx={{ p: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="Task Tracker logo" />
