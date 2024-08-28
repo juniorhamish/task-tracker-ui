@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { fn } from '@storybook/test';
-import AppBar from './AppBar';
+import TopAppBar from './TopAppBar';
 
-const meta: Meta<typeof AppBar> = {
-  component: AppBar,
+const meta: Meta<typeof TopAppBar> = {
+  component: TopAppBar,
   parameters: {
     deepControls: { enabled: true },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof AppBar>;
+type Story = StoryObj<typeof TopAppBar>;
 
 export const LoggedOut: Story = {
   args: {
