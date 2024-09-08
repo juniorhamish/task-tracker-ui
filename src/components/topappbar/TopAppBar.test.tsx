@@ -3,6 +3,8 @@ import { userEvent } from '@testing-library/user-event';
 import TopAppBar from './TopAppBar';
 import { banner, bannerButton } from './TopAppBar.test.helpers';
 
+const emptyUser = { firstName: '', lastName: '', email: '', nickname: '', picture: '', emailVerified: true };
+
 describe('TopAppBar', () => {
   it('should display a Login button when not authenticated', () => {
     render(<TopAppBar onLogin={vi.fn()} onLogout={vi.fn()} />);
@@ -10,7 +12,7 @@ describe('TopAppBar', () => {
     expect(bannerButton('Login')).toBeVisible();
   });
   it('should not display a Login button when authenticated', () => {
-    render(<TopAppBar onLogin={vi.fn()} onLogout={vi.fn()} user={{}} />);
+    render(<TopAppBar onLogin={vi.fn()} onLogout={vi.fn()} user={emptyUser} />);
 
     expect(within(banner()).queryByRole('button', { name: 'Login' })).not.toBeInTheDocument();
   });
@@ -20,7 +22,8 @@ describe('TopAppBar', () => {
         onLogin={vi.fn()}
         onLogout={vi.fn()}
         user={{
-          name: 'UserName',
+          ...emptyUser,
+          nickname: 'UserName',
           picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
         }}
       />,
@@ -50,7 +53,8 @@ describe('TopAppBar', () => {
         onLogin={vi.fn()}
         onLogout={onLogout}
         user={{
-          name: 'UserName',
+          ...emptyUser,
+          nickname: 'UserName',
           picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
         }}
       />,
@@ -68,7 +72,8 @@ describe('TopAppBar', () => {
         onLogin={vi.fn()}
         onLogout={vi.fn()}
         user={{
-          name: 'UserName',
+          ...emptyUser,
+          nickname: 'UserName',
           picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
         }}
       />,

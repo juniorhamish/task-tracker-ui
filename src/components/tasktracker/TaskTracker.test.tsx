@@ -1,20 +1,32 @@
 import { render, screen, within } from '@testing-library/react';
 import { expect, vi } from 'vitest';
-import * as auth0 from '@auth0/auth0-react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { ReactNode } from 'react';
 import { banner, bannerButton } from '../topappbar/TopAppBar.test.helpers';
 import TaskTracker from './TaskTracker';
+import getUserInfo from '../../service/UserInfoService';
+import { UserInfoResponse } from '../../common/types';
 
 vi.mock('@auth0/auth0-react');
+vi.mock('../../service/UserInfoService');
 
 const renderWithRouter = (children: ReactNode, route?: string) =>
   render(<MemoryRouter initialEntries={route ? [route] : undefined}>{children}</MemoryRouter>);
-const mockAuth0 = (response: Partial<auth0.Auth0ContextInterface>) => {
-  vi.mocked(auth0.useAuth0).mockReturnValue(response as auth0.Auth0ContextInterface);
+const mockAuth0 = (response: Partial<Auth0ContextInterface>) => {
+  const getAccessTokenSilently = vi.fn();
+  getAccessTokenSilently.mockResolvedValueOnce('Token');
+  vi.mocked(useAuth0).mockReturnValue({ ...response, getAccessTokenSilently } as Auth0ContextInterface);
 };
+const mockUserInfo = (userInfo: Partial<UserInfoResponse>) =>
+  vi.mocked(getUserInfo).mockResolvedValueOnce({
+    firstName: userInfo.firstName ?? '',
+    lastName: userInfo.lastName ?? '',
+    email: userInfo.email ?? '',
+    nickname: userInfo.nickname ?? '',
+    picture: userInfo.picture ?? '',
+  });
 
 describe('TaskTracker', () => {
   afterEach(() => {
@@ -30,18 +42,20 @@ describe('TaskTracker', () => {
 
     expect(bannerButton('Login')).toBeVisible();
   });
-  it('should show the user avatar if user authenticated', () => {
+  it('should show the user avatar if user authenticated', async () => {
+    mockUserInfo({ nickname: 'UserName', picture: 'https://foo.com' });
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
-      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
+      user: { email_verified: true },
     });
 
     renderWithRouter(<TaskTracker />);
 
-    expect(within(banner()).getByAltText('UserName')).toBeVisible();
+    expect(await within(banner()).findByAltText('UserName')).toBeVisible();
   });
-  it('should show a message if user authenticated and email not verified', () => {
+  it('should show a message if user authenticated and email not verified', async () => {
+    mockUserInfo({});
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
@@ -50,7 +64,7 @@ describe('TaskTracker', () => {
 
     renderWithRouter(<TaskTracker />);
 
-    expect(screen.getByText('Please verify your email address.')).toBeVisible();
+    expect(await screen.findByText('Please verify your email address.')).toBeVisible();
   });
   it('should invoke the loginWithPopup flow when login is clicked', async () => {
     mockAuth0({
@@ -78,33 +92,35 @@ describe('TaskTracker', () => {
     expect(bannerButton('Login')).toBeVisible();
   });
   it('should invoke the logout flow when Logout is clicked', async () => {
+    mockUserInfo({ nickname: 'UserName', picture: 'https://foo.com' });
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockResolvedValueOnce({}),
-      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
+      user: { email_verified: true },
     });
     const { logout } = useAuth0();
     renderWithRouter(<TaskTracker />);
 
-    await userEvent.click(within(banner()).getByAltText('UserName'));
+    await userEvent.click(await within(banner()).findByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
     expect(logout).toHaveBeenCalledOnce();
   });
   it('should remain authenticated if the logout flow fails', async () => {
+    mockUserInfo({ picture: 'https://foo.com', nickname: 'UserName' });
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
       logout: vi.fn().mockRejectedValueOnce({}),
-      user: { email_verified: true, name: 'UserName', picture: 'https://foo.com' },
+      user: { email_verified: true },
     });
     renderWithRouter(<TaskTracker />);
 
-    await userEvent.click(within(banner()).getByAltText('UserName'));
+    await userEvent.click(await within(banner()).findByAltText('UserName'));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
-    expect(within(banner()).getByAltText('UserName')).toBeVisible();
+    expect(await within(banner()).findByAltText('UserName')).toBeVisible();
   });
   it('should show a spinner while the login flow is in progress', () => {
     mockAuth0({
@@ -114,6 +130,17 @@ describe('TaskTracker', () => {
     renderWithRouter(<TaskTracker />);
 
     expect(screen.getByRole('progressbar')).toBeVisible();
+  });
+  it('should show a spinner while the user info is fetched', async () => {
+    vi.mocked(getUserInfo).mockReturnValue(new Promise<UserInfoResponse>(() => {}));
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    renderWithRouter(<TaskTracker />);
+
+    expect(await screen.findByRole('progressbar')).toBeVisible();
   });
   it('should show the welcome screen if the user is not logged in', () => {
     mockAuth0({
@@ -125,15 +152,16 @@ describe('TaskTracker', () => {
     expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
     expect(screen.getByText('Please log in or sign up!')).toBeVisible();
   });
-  it('should show the authenticated screen if the user is logged in', () => {
+  it('should show the authenticated screen if the user is logged in', async () => {
+    mockUserInfo({ nickname: 'Dave' });
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
-      user: { email_verified: true, given_name: 'Dave' },
+      user: { email_verified: true },
     });
     renderWithRouter(<TaskTracker />);
 
-    expect(screen.getByText(/Dave/)).toBeVisible();
+    expect(await screen.findByText(/Dave/)).toBeVisible();
   });
   it('should show the welcome screen if an unauthenticated user navigates directly to the verify screen', () => {
     mockAuth0({
@@ -144,15 +172,16 @@ describe('TaskTracker', () => {
 
     expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
   });
-  it('should show the authenticated screen if a verified user navigates directly to the verify screen', () => {
+  it('should show the authenticated screen if a verified user navigates directly to the verify screen', async () => {
+    mockUserInfo({ nickname: 'DJ' });
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
-      user: { email_verified: true, given_name: 'Dave' },
+      user: { email_verified: true },
     });
     renderWithRouter(<TaskTracker />, '/verify');
 
-    expect(screen.getByText(/Dave/)).toBeVisible();
+    expect(await screen.findByText(/DJ/)).toBeVisible();
   });
   it('should show the welcome screen if an unauthenticated user navigates directly to the home screen', () => {
     mockAuth0({
@@ -163,7 +192,8 @@ describe('TaskTracker', () => {
 
     expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
   });
-  it('should show the verify screen if an unverified user navigates directly to the home screen', () => {
+  it('should show the verify screen if an unverified user navigates directly to the home screen', async () => {
+    mockUserInfo({});
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
@@ -171,6 +201,37 @@ describe('TaskTracker', () => {
     });
     renderWithRouter(<TaskTracker />, '/home');
 
-    expect(screen.getByText('Please verify your email address.')).toBeVisible();
+    expect(await screen.findByText('Please verify your email address.')).toBeVisible();
+  });
+  it('should show the My Profile screen if the user is authenticated', async () => {
+    mockUserInfo({});
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    renderWithRouter(<TaskTracker />, '/profile');
+
+    expect(await screen.findByRole('heading', { name: 'My Profile' })).toBeVisible();
+  });
+  it('should show the Welcome screen if an unauthenticated user navigates directly to the profile screen', () => {
+    mockAuth0({
+      isAuthenticated: false,
+      isLoading: false,
+    });
+    renderWithRouter(<TaskTracker />, '/profile');
+
+    expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+  });
+  it('should show the Verify screen if an unverified user navigates directly to the profile screen', async () => {
+    mockUserInfo({});
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: false },
+    });
+    renderWithRouter(<TaskTracker />, '/profile');
+
+    expect(await screen.findByText('Please verify your email address.')).toBeVisible();
   });
 });

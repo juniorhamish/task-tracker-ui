@@ -1,12 +1,12 @@
 import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
-import { User } from '../../common/types';
+import { UserInfo } from '../../common/types';
 
 interface Props {
   onLogin: () => void;
   onLogout: () => void;
-  user?: User;
+  user?: UserInfo;
 }
 
 export default function TopAppBar({ onLogin, onLogout, user }: Props) {
@@ -42,7 +42,7 @@ export default function TopAppBar({ onLogin, onLogout, user }: Props) {
               aria-haspopup
               aria-controls={userMenuId}
             >
-              <Avatar src={user.picture} alt={user.name} />
+              <Avatar src={user.picture} alt={user.nickname} />
             </IconButton>
             <Menu
               id={userMenuId}
