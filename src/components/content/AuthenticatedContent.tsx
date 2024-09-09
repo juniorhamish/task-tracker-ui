@@ -1,30 +1,30 @@
 import { Navigate } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import { User } from '../../common/types';
+import { Card, CardContent, CardMedia, Grid2, Typography } from '@mui/material';
+import { UserInfo } from '../../common/types';
 
 interface Props {
-  user?: User;
+  user?: UserInfo;
 }
 
 export default function AuthenticatedContent({ user }: Props) {
   if (!user) {
     return <Navigate to="/" />;
   }
-  if (!user.email_verified) {
+  if (!user.emailVerified) {
     return <Navigate to="/verify" />;
   }
   return (
-    <Grid container alignContent="center" justifyContent="center" flexGrow={1}>
-      <Grid item>
+    <Grid2 container alignContent="center" justifyContent="center" flexGrow={1}>
+      <Grid2>
         <Card variant="outlined">
           <CardMedia component="img" height="194" image={user.picture} />
           <CardContent>
             <Typography variant="h4" gutterBottom>
-              {`${user.given_name ?? ''} ${user.family_name ?? ''} ${user.name ?? ''} ${user.nickname ?? ''}`}
+              {user.nickname}
             </Typography>
           </CardContent>
         </Card>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }

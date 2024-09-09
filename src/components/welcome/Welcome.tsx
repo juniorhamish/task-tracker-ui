@@ -1,16 +1,16 @@
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid2, Typography } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import { User } from '../../common/types';
+import { UserInfo } from '../../common/types';
 
 interface Props {
-  user?: User;
+  user?: UserInfo;
 }
 export default function Welcome({ user }: Props) {
   if (user) {
     return <Navigate to="/home" />;
   }
   return (
-    <Grid container alignContent="center" justifyContent="center" flexGrow={1}>
+    <Grid2 container alignContent="center" justifyContent="center" flexGrow={1}>
       <Card variant="outlined">
         <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant="h4" gutterBottom>
@@ -19,6 +19,6 @@ export default function Welcome({ user }: Props) {
           <Typography gutterBottom>Please log in or sign up!</Typography>
         </CardContent>
       </Card>
-    </Grid>
+    </Grid2>
   );
 }

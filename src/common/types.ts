@@ -1,8 +1,10 @@
-export interface User {
-  given_name?: string;
-  family_name?: string;
-  name?: string;
-  nickname?: string;
-  picture?: string;
-  email_verified?: boolean;
+export interface UserInfoResponse {
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  email: string;
+  picture: string;
+}
+export interface UserInfo extends UserInfoResponse {
+  emailVerified: boolean;
 }

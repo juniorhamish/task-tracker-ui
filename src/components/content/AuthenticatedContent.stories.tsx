@@ -14,12 +14,12 @@ export const Primary: Story = {
   },
   args: {
     user: {
-      given_name: 'string',
-      family_name: 'string',
-      name: 'string',
+      firstName: 'string',
+      lastName: 'string',
       nickname: 'string',
       picture: 'string',
-      email_verified: true,
+      email: 'string',
+      emailVerified: true,
     },
   },
 };

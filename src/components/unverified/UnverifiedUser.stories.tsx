@@ -9,7 +9,14 @@ const meta: Meta<typeof UnverifiedUser> = {
     },
   },
   args: {
-    user: {},
+    user: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      picture: '',
+      nickname: '',
+      emailVerified: false,
+    },
   },
 };
 
