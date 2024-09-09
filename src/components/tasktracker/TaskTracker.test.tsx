@@ -52,7 +52,7 @@ describe('TaskTracker', () => {
 
     renderWithRouter(<TaskTracker />);
 
-    expect(await within(banner()).findByAltText('UserName')).toBeVisible();
+    expect(await within(banner()).findByRole('img', { name: 'UserName' })).toBeVisible();
   });
   it('should show a message if user authenticated and email not verified', async () => {
     mockUserInfo({});
@@ -102,7 +102,7 @@ describe('TaskTracker', () => {
     const { logout } = useAuth0();
     renderWithRouter(<TaskTracker />);
 
-    await userEvent.click(await within(banner()).findByAltText('UserName'));
+    await userEvent.click(await within(banner()).findByRole('img', { name: 'UserName' }));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
     expect(logout).toHaveBeenCalledOnce();
@@ -117,10 +117,10 @@ describe('TaskTracker', () => {
     });
     renderWithRouter(<TaskTracker />);
 
-    await userEvent.click(await within(banner()).findByAltText('UserName'));
+    await userEvent.click(await within(banner()).findByRole('img', { name: 'UserName' }));
     await userEvent.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
-    expect(await within(banner()).findByAltText('UserName')).toBeVisible();
+    expect(await within(banner()).findByRole('img', { name: 'UserName' })).toBeVisible();
   });
   it('should show a spinner while the login flow is in progress', () => {
     mockAuth0({

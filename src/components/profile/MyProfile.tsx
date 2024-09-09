@@ -43,6 +43,9 @@ export default function MyProfile({ user }: Props) {
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
+              onFocus={(e) => {
+                e.target.select();
+              }}
             />
           </FormGrid>
           <FormGrid size={{ xs: 12, md: 6 }}>
@@ -59,6 +62,9 @@ export default function MyProfile({ user }: Props) {
               value={lastName}
               onChange={(e) => {
                 setLastName(e.target.value);
+              }}
+              onFocus={(e) => {
+                e.target.select();
               }}
             />
           </FormGrid>

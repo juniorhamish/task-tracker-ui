@@ -29,7 +29,7 @@ describe('TopAppBar', () => {
       />,
     );
 
-    const avatar = within(banner()).getByAltText('UserName');
+    const avatar = within(banner()).getByRole('img', { name: 'UserName' });
     expect(avatar).toBeVisible();
     expect(avatar).toHaveAttribute(
       'src',
@@ -60,7 +60,7 @@ describe('TopAppBar', () => {
       />,
     );
 
-    await user.click(within(banner()).getByAltText('UserName'));
+    await user.click(within(banner()).getByRole('img', { name: 'UserName' }));
     await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
 
     expect(onLogout).toHaveBeenCalledWith();
@@ -79,7 +79,7 @@ describe('TopAppBar', () => {
       />,
     );
 
-    await user.click(within(banner()).getByAltText('UserName'));
+    await user.click(within(banner()).getByRole('img', { name: 'UserName' }));
     await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
