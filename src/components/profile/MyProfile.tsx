@@ -13,8 +13,8 @@ const FormGrid = styled(Grid2)(() => ({
 }));
 
 export default function MyProfile({ user }: Props) {
-  const [givenName, setGivenName] = useState(user?.firstName);
-  const [familyName, setFamilyName] = useState(user?.lastName);
+  const [firstName, setFirstName] = useState(user?.firstName);
+  const [lastName, setLastName] = useState(user?.lastName);
   if (!user?.emailVerified) {
     return <Navigate to="/" />;
   }
@@ -35,14 +35,13 @@ export default function MyProfile({ user }: Props) {
             <OutlinedInput
               id="first-name"
               name="first-name"
-              type="name"
               placeholder="John"
-              autoComplete="first name"
+              autoComplete="given-name"
               required
               size="small"
-              value={givenName}
+              value={firstName}
               onChange={(e) => {
-                setGivenName(e.target.value);
+                setFirstName(e.target.value);
               }}
             />
           </FormGrid>
@@ -53,14 +52,13 @@ export default function MyProfile({ user }: Props) {
             <OutlinedInput
               id="last-name"
               name="last-name"
-              type="last-name"
               placeholder="Snow"
-              autoComplete="last name"
+              autoComplete="family-name"
               required
               size="small"
-              value={familyName}
+              value={lastName}
               onChange={(e) => {
-                setFamilyName(e.target.value);
+                setLastName(e.target.value);
               }}
             />
           </FormGrid>
