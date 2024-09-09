@@ -18,7 +18,7 @@ export default function TaskTracker() {
       const retrieveUserInfo = async () => {
         const token = await getAccessTokenSilently();
         const userDetails = await getUserInfo(token);
-        setUserInfo({ ...userDetails, emailVerified: user.email_verified ?? false });
+        setUserInfo({ ...userDetails, emailVerified: !!user.email_verified });
       };
       retrieveUserInfo().catch(() => {});
     }
