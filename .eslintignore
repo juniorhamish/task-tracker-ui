@@ -1,5 +1,0 @@
-src/vite-env.d.ts
-dist
-.eslintrc.cjs
-vitest.config.ts
-vite.config.ts
