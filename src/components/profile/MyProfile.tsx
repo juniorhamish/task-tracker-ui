@@ -13,11 +13,11 @@ const FormGrid = styled(Grid2)(() => ({
 }));
 
 export default function MyProfile({ user }: Props) {
+  const [firstName, setFirstName] = useState(user?.firstName);
+  const [lastName, setLastName] = useState(user?.lastName);
   if (!user) {
     return <Navigate to="/" />;
   }
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
   return (
     <Box>
       <Typography variant="h2">My Profile</Typography>
