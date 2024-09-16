@@ -15,13 +15,9 @@ vi.mock('../../gen/client/services.gen');
 const renderWithRouter = (children: ReactNode, route?: string) =>
   render(<MemoryRouter initialEntries={route ? [route] : undefined}>{children}</MemoryRouter>);
 const mockAuth0 = (response: Partial<Auth0ContextInterface>) => {
-  const getAccessTokenSilently = vi.fn();
-  getAccessTokenSilently.mockResolvedValueOnce('Token');
-  vi.mocked(useAuth0).mockReturnValue({ ...response, getAccessTokenSilently } as Auth0ContextInterface);
+  vi.mocked(useAuth0).mockReturnValue({ ...response } as Auth0ContextInterface);
 };
 const mockUserInfo = (userInfo: Partial<UserInfo>) =>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   vi.mocked(UserInfoService.get).mockResolvedValueOnce({
     data: {
       firstName: userInfo.firstName ?? '',
@@ -31,7 +27,7 @@ const mockUserInfo = (userInfo: Partial<UserInfo>) =>
       picture: userInfo.picture ?? '',
     },
     status: 200,
-  });
+  } as AxiosResponse<UserInfo>);
 
 describe('TaskTracker', () => {
   afterEach(() => {
@@ -60,7 +56,6 @@ describe('TaskTracker', () => {
     expect(await within(banner()).findByRole('img', { name: 'UserName' })).toBeVisible();
   });
   it('should show a message if user authenticated and email not verified', async () => {
-    mockUserInfo({});
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
@@ -198,7 +193,6 @@ describe('TaskTracker', () => {
     expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
   });
   it('should show the verify screen if an unverified user navigates directly to the home screen', async () => {
-    mockUserInfo({});
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
@@ -229,7 +223,6 @@ describe('TaskTracker', () => {
     expect(screen.getByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
   });
   it('should show the Verify screen if an unverified user navigates directly to the profile screen', async () => {
-    mockUserInfo({});
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
