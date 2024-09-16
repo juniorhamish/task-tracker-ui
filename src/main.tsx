@@ -6,6 +6,9 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import { client } from './gen/client';
+
+client.setConfig({ baseURL: '/api' });
 
 const rootElement = document.querySelector('#root');
 if (rootElement) {

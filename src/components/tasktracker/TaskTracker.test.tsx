@@ -6,11 +6,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { ReactNode } from 'react';
 import { banner, bannerButton } from '../topappbar/TopAppBar.test.helpers';
 import TaskTracker from './TaskTracker';
-import getUserInfo from '../../service/UserInfoService';
-import { UserInfoResponse } from '../../common/types';
+import { UserInfo, UserInfoService } from '../../gen/client';
+import { AxiosResponse } from 'axios';
 
 vi.mock('@auth0/auth0-react');
-vi.mock('../../service/UserInfoService');
+vi.mock('../../gen/client/services.gen');
 
 const renderWithRouter = (children: ReactNode, route?: string) =>
   render(<MemoryRouter initialEntries={route ? [route] : undefined}>{children}</MemoryRouter>);
@@ -19,13 +19,18 @@ const mockAuth0 = (response: Partial<Auth0ContextInterface>) => {
   getAccessTokenSilently.mockResolvedValueOnce('Token');
   vi.mocked(useAuth0).mockReturnValue({ ...response, getAccessTokenSilently } as Auth0ContextInterface);
 };
-const mockUserInfo = (userInfo: Partial<UserInfoResponse>) =>
-  vi.mocked(getUserInfo).mockResolvedValueOnce({
-    firstName: userInfo.firstName ?? '',
-    lastName: userInfo.lastName ?? '',
-    email: userInfo.email ?? '',
-    nickname: userInfo.nickname ?? '',
-    picture: userInfo.picture ?? '',
+const mockUserInfo = (userInfo: Partial<UserInfo>) =>
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  vi.mocked(UserInfoService.get).mockResolvedValueOnce({
+    data: {
+      firstName: userInfo.firstName ?? '',
+      lastName: userInfo.lastName ?? '',
+      email: userInfo.email ?? '',
+      nickname: userInfo.nickname ?? '',
+      picture: userInfo.picture ?? '',
+    },
+    status: 200,
   });
 
 describe('TaskTracker', () => {
@@ -132,7 +137,7 @@ describe('TaskTracker', () => {
     expect(screen.getByRole('progressbar')).toBeVisible();
   });
   it('should show a spinner while the user info is fetched', async () => {
-    vi.mocked(getUserInfo).mockReturnValue(new Promise<UserInfoResponse>(() => {}));
+    vi.mocked(UserInfoService.get).mockReturnValue(new Promise<AxiosResponse<UserInfo>>(() => {}));
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,

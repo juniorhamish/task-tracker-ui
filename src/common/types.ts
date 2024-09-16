@@ -1,10 +1,5 @@
-export interface UserInfoResponse {
-  firstName: string;
-  lastName: string;
-  nickname: string;
-  email: string;
-  picture: string;
-}
-export interface UserInfo extends UserInfoResponse {
+import { UserInfo } from '../gen/client';
+
+export interface VerifiedUserInfo extends UserInfo {
   emailVerified: boolean;
 }

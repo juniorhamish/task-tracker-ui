@@ -10,6 +10,7 @@ import pluginPromise from 'eslint-plugin-promise';
 
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+  { settings: { react: { version: 'detect' } } },
   { ignores: ['src/vite-env.d.ts', 'dist', 'vitest.config.ts', 'vite.config.ts', 'coverage', '!.storybook'] },
   {
     languageOptions: {

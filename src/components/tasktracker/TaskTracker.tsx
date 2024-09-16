@@ -6,19 +6,22 @@ import TopAppBar from '../topappbar/TopAppBar';
 import UnverifiedUser from '../unverified/UnverifiedUser';
 import AuthenticatedContent from '../content/AuthenticatedContent';
 import Welcome from '../welcome/Welcome';
-import { UserInfo } from '../../common/types';
+import { VerifiedUserInfo } from '../../common/types';
 import MyProfile from '../profile/MyProfile';
-import getUserInfo from '../../service/UserInfoService';
+import { UserInfoService } from '../../gen/client';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout, getAccessTokenSilently } = useAuth0();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [userInfo, setUserInfo] = useState<VerifiedUserInfo>();
   useEffect(() => {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
         const token = await getAccessTokenSilently();
-        const userDetails = await getUserInfo(token);
-        setUserInfo({ ...userDetails, emailVerified: !!user.email_verified });
+        const response = await UserInfoService.get({ headers: { Authorization: `Bearer ${token}` } });
+        const userDetails = response.data;
+        if (userDetails) {
+          setUserInfo({ ...userDetails, emailVerified: !!user.email_verified });
+        }
       };
       retrieveUserInfo().catch(() => {});
     }
