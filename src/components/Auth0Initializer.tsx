@@ -8,7 +8,6 @@ export default function Auth0Initializer() {
     client.instance.interceptors.request.use(async (config) => {
       const token = await getAccessTokenSilently();
       config.headers.Authorization = `Bearer ${token}`;
-      config.headers['X-'];
       return config;
     });
   }, [getAccessTokenSilently]);
