@@ -5,6 +5,7 @@ import { client } from '../gen/client';
 export default function Auth0Initializer() {
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
+    client.setConfig({ baseURL: '/api' });
     client.instance.interceptors.request.use(async (config) => {
       const token = await getAccessTokenSilently();
       config.headers.Authorization = `Bearer ${token}`;
