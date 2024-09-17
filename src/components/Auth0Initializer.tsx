@@ -11,6 +11,6 @@ export default function Auth0Initializer() {
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, client]);
   return <></>;
 }
