@@ -33,7 +33,7 @@
     "@chromatic-com/storybook": "^2.0.2",
     "@eslint/js": "^9.10.0",
     "@storybook/addon-a11y": "^8.3.1",
-    "@storybook/addon-essentials": "^8.3.1",
+    "@storybook/addon-essentials": "^8.3.2",
     "@storybook/blocks": "^8.3.1",
     "@storybook/react": "^8.3.1",
     "@storybook/react-vite": "^8.3.1",
