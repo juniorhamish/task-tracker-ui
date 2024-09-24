@@ -8,6 +8,7 @@ import AuthenticatedContent from '../content/AuthenticatedContent';
 import Welcome from '../welcome/Welcome';
 import MyProfile from '../profile/MyProfile';
 import { UserInfo, UserInfoService } from '../../gen/client';
+import { log } from '../../logging/Log.ts';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
@@ -15,7 +16,9 @@ export default function TaskTracker() {
   useEffect(() => {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
-        setUserInfo((await UserInfoService.get()).data);
+        const data = (await UserInfoService.get()).data;
+        await log.info('Got user info.', data);
+        setUserInfo(data);
       };
       retrieveUserInfo().catch(() => {});
     }
