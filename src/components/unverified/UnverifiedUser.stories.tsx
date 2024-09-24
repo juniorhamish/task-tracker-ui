@@ -3,20 +3,9 @@ import UnverifiedUser from './UnverifiedUser';
 
 const meta: Meta<typeof UnverifiedUser> = {
   component: UnverifiedUser,
-  argTypes: {
-    user: {
-      control: false,
-    },
-  },
   args: {
-    user: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      picture: '',
-      nickname: '',
-      emailVerified: false,
-    },
+    loggedIn: true,
+    verified: false,
   },
 };
 

@@ -1,13 +1,13 @@
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent, Grid2, Typography } from '@mui/material';
-import { UserInfo } from '../../common/types';
 
 interface Props {
-  user?: UserInfo;
+  loggedIn: boolean;
+  verified: boolean;
 }
 
-export default function UnverifiedUser({ user }: Props) {
-  if (!user || user.emailVerified) {
+export default function UnverifiedUser({ loggedIn, verified }: Props) {
+  if (!loggedIn || verified) {
     return <Navigate to="/" />;
   }
   return (

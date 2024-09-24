@@ -1,7 +1,7 @@
 import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
-import { UserInfo } from '../../common/types';
+import { UserInfo } from '../../gen/client';
 
 interface Props {
   onLogin: () => void;

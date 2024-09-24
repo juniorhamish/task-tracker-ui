@@ -1,6 +1,6 @@
 import { Card, CardContent, Grid2, Typography } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import { UserInfo } from '../../common/types';
+import { UserInfo } from '../../gen/client';
 
 interface Props {
   user?: UserInfo;

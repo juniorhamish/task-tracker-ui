@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Grid2, Typography } from '@mui/material';
-import { UserInfo } from '../../common/types';
+import { UserInfo } from '../../gen/client';
 
 interface Props {
   user?: UserInfo;
@@ -9,9 +9,6 @@ interface Props {
 export default function AuthenticatedContent({ user }: Props) {
   if (!user) {
     return <Navigate to="/" />;
-  }
-  if (!user.emailVerified) {
-    return <Navigate to="/verify" />;
   }
   return (
     <Grid2 container alignContent="center" justifyContent="center" flexGrow={1}>
