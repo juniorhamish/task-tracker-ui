@@ -1,4 +1,3 @@
-import globals from 'globals';
 import pluginJs from '@eslint/js';
 import pluginTSESLint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
@@ -13,31 +12,22 @@ export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   { settings: { react: { version: 'detect' } } },
   { ignores: ['src/vite-env.d.ts', 'dist', 'vitest.config.ts', 'vite.config.ts', 'coverage', '!.storybook'] },
-  {
-    languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
-      ...jsxA11y.flatConfigs.recommended.languageOptions,
-      globals: globals.browser,
-    },
-  },
   pluginJs.configs.recommended,
-  ...pluginTSESLint.configs.recommended,
+  ...pluginTSESLint.configs.strict,
+  ...pluginTSESLint.configs.stylistic,
   pluginReact.configs.flat.recommended,
   jsxA11y.flatConfigs.recommended,
   pluginPromise.configs['flat/recommended'],
   stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
     semi: true,
-    jsx: true,
   }),
   {
     plugins: {
       'react-refresh': pluginReactRefresh,
       'eslint-comments': pluginEslintComments,
-      '@stylistic': stylistic,
     },
     rules: {
+      'no-console': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/require-default-props': ['off'],
@@ -45,4 +35,6 @@ export default [
     },
   },
   eslintPluginPrettierRecommended,
+  { files: ['**/gen'] },
+  { rules: { '@typescript-eslint/no-extraneous-class': 'off' } },
 ];

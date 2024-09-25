@@ -8,6 +8,7 @@ import AuthenticatedContent from '../content/AuthenticatedContent';
 import Welcome from '../welcome/Welcome';
 import MyProfile from '../profile/MyProfile';
 import { UserInfo, UserInfoService } from '../../gen/client';
+import { log } from '../../logging/Log.ts';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
@@ -15,9 +16,13 @@ export default function TaskTracker() {
   useEffect(() => {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
-        setUserInfo((await UserInfoService.get()).data);
+        const data = (await UserInfoService.get()).data;
+        await log.info('Got user info.', { userInfo: data });
+        setUserInfo(data);
       };
-      retrieveUserInfo().catch(() => {});
+      retrieveUserInfo().catch(async () => {
+        await log.error('Error getting user info.');
+      });
     }
   }, [isAuthenticated, setUserInfo, user]);
   const userInfoLoaded = !isLoading && (!isAuthenticated || !!userInfo || !user?.email_verified);
@@ -32,12 +37,18 @@ export default function TaskTracker() {
         onLogin={() => {
           loginWithPopup()
             .then(() => true)
-            .catch(() => {});
+            .catch(async () => {
+              await log.error('Error logging in.');
+            });
         }}
         onLogout={() => {
           logout({ logoutParams: { returnTo: window.location.origin } })
-            .then(() => true)
-            .catch(() => {});
+            .then(async () => {
+              return await log.info('Successfully logged out.');
+            })
+            .catch(async () => {
+              await log.error('Error logging out.');
+            });
         }}
         user={userInfo}
       />
