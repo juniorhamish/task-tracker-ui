@@ -17,10 +17,12 @@ export default function TaskTracker() {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
         const data = (await UserInfoService.get()).data;
-        await log.info('Got user info.', data);
+        await log.info('Got user info.', { userInfo: data });
         setUserInfo(data);
       };
-      retrieveUserInfo().catch(() => {});
+      retrieveUserInfo().catch(async () => {
+        await log.error('Error getting user info.');
+      });
     }
   }, [isAuthenticated, setUserInfo, user]);
   const userInfoLoaded = !isLoading && (!isAuthenticated || !!userInfo || !user?.email_verified);
@@ -35,12 +37,18 @@ export default function TaskTracker() {
         onLogin={() => {
           loginWithPopup()
             .then(() => true)
-            .catch(() => {});
+            .catch(async () => {
+              await log.error('Error logging in.');
+            });
         }}
         onLogout={() => {
           logout({ logoutParams: { returnTo: window.location.origin } })
-            .then(() => true)
-            .catch(() => {});
+            .then(async () => {
+              return await log.info('Successfully logged out.');
+            })
+            .catch(async () => {
+              await log.error('Error logging out.');
+            });
         }}
         user={userInfo}
       />

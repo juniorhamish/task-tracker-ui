@@ -2,6 +2,7 @@ import { createTheme, CssBaseline, ThemeProvider, useMediaQuery } from '@mui/mat
 import { useMemo } from 'react';
 import TaskTracker from './components/tasktracker/TaskTracker';
 import Auth0Initializer from './components/Auth0Initializer.tsx';
+import LoggingMetaData from './logging/LoggingMetaData.tsx';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -17,6 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Auth0Initializer />
+      <LoggingMetaData />
       <TaskTracker />
     </ThemeProvider>
   );

@@ -132,7 +132,7 @@ describe('TaskTracker', () => {
     expect(screen.getByRole('progressbar')).toBeVisible();
   });
   it('should show a spinner while the user info is fetched', async () => {
-    vi.mocked(UserInfoService.get).mockReturnValue(new Promise<AxiosResponse<UserInfo>>(() => {}));
+    vi.mocked(UserInfoService.get).mockReturnValue(new Promise<AxiosResponse<UserInfo>>(vi.fn()));
     mockAuth0({
       isAuthenticated: true,
       isLoading: false,
