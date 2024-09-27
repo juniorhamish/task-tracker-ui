@@ -20,6 +20,8 @@ export default [
   pluginPromise.configs['flat/recommended'],
   stylistic.configs.customize({
     semi: true,
+    braceStyle: '1tbs',
+    arrowParens: false,
   }),
   {
     plugins: {
