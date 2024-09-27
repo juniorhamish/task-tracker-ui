@@ -20,7 +20,7 @@ describe('request headers', () => {
     setRequestHeader = vi.fn();
     const xhrMock: Partial<XMLHttpRequest> = {
       open: vi.fn(),
-      send: Promise.resolve,
+      send: void Promise.resolve,
       setRequestHeader,
     };
     vi.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
