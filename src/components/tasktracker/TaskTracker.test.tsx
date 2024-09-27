@@ -232,4 +232,19 @@ describe('TaskTracker', () => {
 
     expect(await screen.findByText('Please verify your email address.')).toBeVisible();
   });
+  it('should show the profile screen when My Profie menu item is selected', async () => {
+    mockUserInfo({ nickname: 'Dave', picture: 'https://example.com' });
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    const user = userEvent.setup();
+    renderWithRouter(<TaskTracker />);
+
+    await user.click(await within(banner()).findByRole('img', { name: 'Dave' }));
+    await user.click(screen.getByRole('menuitem', { name: 'My Profile' }));
+
+    expect(await screen.findByRole('heading', { name: 'My Profile' })).toBeVisible();
+  });
 });

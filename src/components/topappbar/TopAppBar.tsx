@@ -2,6 +2,7 @@ import { AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typog
 import { useId, useState } from 'react';
 import logo from '../../assets/logo.png';
 import { UserInfo } from '../../gen/client';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   onLogin: () => void;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function TopAppBar({ onLogin, onLogout, user }: Props) {
+  const navigate = useNavigate();
   const userMenuId = useId();
   const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
   const closeUserMenu = () => {
@@ -60,6 +62,14 @@ export default function TopAppBar({ onLogin, onLogout, user }: Props) {
               }}
               onClose={closeUserMenu}
             >
+              <MenuItem
+                onClick={() => {
+                  navigate('/profile');
+                  closeUserMenu();
+                }}
+              >
+                <Typography textAlign="center">My Profile</Typography>
+              </MenuItem>
               <MenuItem
                 onClick={() => {
                   onLogout();

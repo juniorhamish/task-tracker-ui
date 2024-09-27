@@ -36,6 +36,24 @@ describe('TopAppBar', () => {
       'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
     );
   });
+  it('should display the My Profile menu item when the user is authenticated', async () => {
+    const user = userEvent.setup();
+    render(
+      <TopAppBar
+        onLogin={vi.fn()}
+        onLogout={vi.fn()}
+        user={{
+          ...emptyUser,
+          nickname: 'DJ',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
+      />,
+    );
+
+    await user.click(within(banner()).getByRole('img', { name: 'DJ' }));
+
+    expect(screen.getByRole('menuitem', { name: 'My Profile' })).toBeVisible();
+  });
   it('should invoke the onLogin callback when the Login button is clicked', async () => {
     const onLogin = vi.fn();
     const user = userEvent.setup();
@@ -81,6 +99,25 @@ describe('TopAppBar', () => {
 
     await user.click(within(banner()).getByRole('img', { name: 'UserName' }));
     await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'Logout' }));
+
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+  it('should close the user menu when the My Profile button is clicked', async () => {
+    const user = userEvent.setup();
+    render(
+      <TopAppBar
+        onLogin={vi.fn()}
+        onLogout={vi.fn()}
+        user={{
+          ...emptyUser,
+          nickname: 'UserName',
+          picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+        }}
+      />,
+    );
+
+    await user.click(within(banner()).getByRole('img', { name: 'UserName' }));
+    await user.click(within(screen.getByRole('menu')).getByRole('menuitem', { name: 'My Profile' }));
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
