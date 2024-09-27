@@ -18,9 +18,10 @@ describe('request headers', () => {
       getAccessTokenWithPopup,
     } as unknown as Auth0ContextInterface);
     setRequestHeader = vi.fn();
+    const doSend = () => Promise.resolve();
     const xhrMock: Partial<XMLHttpRequest> = {
       open: vi.fn(),
-      send: void Promise.resolve,
+      send: void doSend(),
       setRequestHeader,
     };
     vi.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
