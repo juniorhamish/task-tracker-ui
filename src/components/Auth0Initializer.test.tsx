@@ -2,6 +2,7 @@ import { client, UserInfoService } from '../gen/client';
 import { Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import Auth0Initializer from './Auth0Initializer.tsx';
 import { render } from '@testing-library/react';
+import { log } from '../logging/Log.ts';
 
 vi.mock('@auth0/auth0-react');
 
@@ -24,6 +25,7 @@ describe('request headers', () => {
     };
     vi.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
     vi.spyOn(client, 'setConfig');
+    vi.spyOn(log, 'error');
   });
   afterEach(() => {
     vi.resetAllMocks();
@@ -38,12 +40,14 @@ describe('request headers', () => {
   });
   it('should use the popup if it fails to get the token silently', async () => {
     render(<Auth0Initializer />);
-    vi.mocked(getAccessTokenSilently).mockRejectedValueOnce(new Error('Failed to get token silently'));
+    const error = new Error('Failed to get token silently');
+    vi.mocked(getAccessTokenSilently).mockRejectedValueOnce(error);
     vi.mocked(getAccessTokenWithPopup).mockResolvedValueOnce('Token From Popup');
 
     await UserInfoService.get();
 
     expect(setRequestHeader).toHaveBeenCalledWith('Authorization', 'Bearer Token From Popup');
+    expect(log.error).toHaveBeenCalledWith('Failed to get token silently.', error);
   });
   it('should set the base URL', async () => {
     render(<Auth0Initializer />);

@@ -2,6 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import { client } from '../gen/client';
 import { log } from '../logging/Log.ts';
+import { Context } from '@logtail/types';
 
 export default function Auth0Initializer() {
   const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
@@ -12,9 +13,7 @@ export default function Auth0Initializer() {
       try {
         token = await getAccessTokenSilently();
       } catch (e) {
-        if (e instanceof Error) {
-          await log.error('Failed to get token silently.', e);
-        }
+        await log.error('Failed to get token silently.', e as Context);
         token = await getAccessTokenWithPopup();
       }
       config.headers.Authorization = `Bearer ${token}`;
