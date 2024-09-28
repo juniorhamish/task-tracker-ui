@@ -242,5 +242,15 @@ describe('TaskTracker', () => {
 
       expect(await screen.findByRole('heading', { name: 'My Profile' })).toBeVisible();
     });
+    it('should remain on the My Profile screen while the authentication is loading', async () => {
+      mockUserInfo({});
+      mockAuth0({
+        isAuthenticated: false,
+        isLoading: true,
+      });
+      renderWithRouter(<TaskTracker />, '/profile');
+
+      expect(await screen.findByRole('heading', { name: 'My Profile' })).toBeVisible();
+    });
   });
 });
