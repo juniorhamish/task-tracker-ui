@@ -12,7 +12,13 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['json', 'html', 'lcov'],
       include: ['src/**/*.@(js|jsx|mjs|ts|tsx)'],
-      exclude: ['src/main.tsx', 'src/gen/**/*.ts', 'src/App.tsx', '**/*.@(stories|test).@(js|jsx|mjs|ts|tsx)'],
+      exclude: [
+        'src/main.tsx',
+        'src/gen/**/*.ts',
+        'src/App.tsx',
+        '**/*.@(stories|test).@(js|jsx|mjs|ts|tsx)',
+        'src/logging/*',
+      ],
     },
     reporters: ['default', 'junit'],
     outputFile: {

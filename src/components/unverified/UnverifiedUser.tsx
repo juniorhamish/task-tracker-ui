@@ -1,15 +1,6 @@
-import { Navigate } from 'react-router-dom';
 import { Card, CardContent, Grid2, Typography } from '@mui/material';
 
-interface Props {
-  loggedIn: boolean;
-  verified: boolean;
-}
-
-export default function UnverifiedUser({ loggedIn, verified }: Readonly<Props>) {
-  if (!loggedIn || verified) {
-    return <Navigate to="/" />;
-  }
+export default function UnverifiedUser() {
   return (
     <Grid2 container alignItems="center" justifyContent="center" flexGrow={1}>
       <Card variant="outlined">

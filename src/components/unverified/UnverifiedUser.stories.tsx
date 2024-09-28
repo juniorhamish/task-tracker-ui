@@ -3,10 +3,6 @@ import UnverifiedUser from './UnverifiedUser';
 
 const meta: Meta<typeof UnverifiedUser> = {
   component: UnverifiedUser,
-  args: {
-    loggedIn: true,
-    verified: false,
-  },
 };
 
 export default meta;

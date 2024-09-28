@@ -1,31 +1,38 @@
 import { Backdrop, CircularProgress, Container } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import TopAppBar from '../topappbar/TopAppBar';
 import UnverifiedUser from '../unverified/UnverifiedUser';
 import AuthenticatedContent from '../content/AuthenticatedContent';
-import Welcome from '../welcome/Welcome';
 import MyProfile from '../profile/MyProfile';
 import { UserInfo, UserInfoService } from '../../gen/client';
 import { log } from '../../logging/Log.ts';
+import VerifiedRoute from '../routing/VerifiedRoute.tsx';
+import HomeRoute from '../routing/HomeRoute.tsx';
+import UnverifiedRoute from '../routing/UnverifiedRoute.tsx';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
   useEffect(() => {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
+        setIsLoadingUserInfo(true);
         const data = (await UserInfoService.get()).data;
         await log.info('Got user info.', { userInfo: data });
         setUserInfo(data);
+        setIsLoadingUserInfo(false);
       };
       retrieveUserInfo().catch(async () => {
         await log.error('Error getting user info.');
+        setIsLoadingUserInfo(false);
       });
     }
   }, [isAuthenticated, setUserInfo, user]);
-  const userInfoLoaded = !isLoading && (!isAuthenticated || !!userInfo || !user?.email_verified);
+  const loadInProgress = isLoading || isLoadingUserInfo;
   return (
     <Container
       maxWidth="lg"
@@ -36,35 +43,46 @@ export default function TaskTracker() {
       <TopAppBar
         onLogin={() => {
           loginWithPopup()
-            .then(() => true)
-            .catch(async () => {
-              await log.error('Error logging in.');
-            });
+            .then(async () => await log.info('Successfully logged in.'))
+            .catch(async () => await log.error('Error logging in.'));
         }}
         onLogout={() => {
           logout({ logoutParams: { returnTo: window.location.origin } })
-            .then(async () => {
-              return await log.info('Successfully logged out.');
-            })
-            .catch(async () => {
-              await log.error('Error logging out.');
-            });
+            .then(async () => await log.info('Successfully logged out.'))
+            .catch(async () => await log.error('Error logging out.'));
         }}
+        onMyProfile={() => navigate('/profile')}
         user={userInfo}
       />
-      {user && !user.email_verified && <Navigate to="/verify" />}
-      {userInfoLoaded && (
-        <Routes>
-          <Route path="/home" element={<AuthenticatedContent user={userInfo} />} />
-          <Route
-            path="/verify"
-            element={<UnverifiedUser loggedIn={isAuthenticated} verified={!!user?.email_verified} />}
-          />
-          <Route path="/profile" element={<MyProfile user={userInfo} />} />
-          <Route path="/" element={<Welcome user={userInfo} />} />
-        </Routes>
-      )}
-      <Backdrop open={!userInfoLoaded} aria-hidden={userInfoLoaded}>
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <VerifiedRoute>
+              <AuthenticatedContent user={userInfo} />
+            </VerifiedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <VerifiedRoute>
+              <MyProfile user={userInfo} />
+            </VerifiedRoute>
+          }
+        />
+        <Route
+          path="/verify"
+          element={
+            <UnverifiedRoute>
+              <UnverifiedUser />
+            </UnverifiedRoute>
+          }
+        />
+        <Route path="/" element={<HomeRoute />} />
+        <Route path={'/*'} element={<Navigate to="/" />} />
+      </Routes>
+      <Backdrop open={loadInProgress} aria-hidden={!loadInProgress}>
         <CircularProgress />
       </Backdrop>
     </Container>
