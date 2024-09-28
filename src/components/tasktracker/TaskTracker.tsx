@@ -16,19 +16,23 @@ export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
   useEffect(() => {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
+        setIsLoadingUserInfo(true);
         const data = (await UserInfoService.get()).data;
         await log.info('Got user info.', { userInfo: data });
         setUserInfo(data);
+        setIsLoadingUserInfo(false);
       };
       retrieveUserInfo().catch(async () => {
         await log.error('Error getting user info.');
+        setIsLoadingUserInfo(false);
       });
     }
   }, [isAuthenticated, setUserInfo, user]);
-  const userInfoLoaded = !isLoading && (!isAuthenticated || !!userInfo || !user?.email_verified);
+  const loadInProgress = isLoading || isLoadingUserInfo;
   return (
     <Container
       maxWidth="lg"
@@ -78,7 +82,7 @@ export default function TaskTracker() {
         <Route path="/" element={<HomeRoute />} />
         <Route path={'/*'} element={<Navigate to="/" />} />
       </Routes>
-      <Backdrop open={!userInfoLoaded} aria-hidden={userInfoLoaded}>
+      <Backdrop open={loadInProgress} aria-hidden={!loadInProgress}>
         <CircularProgress />
       </Backdrop>
     </Container>

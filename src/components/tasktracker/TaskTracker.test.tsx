@@ -131,6 +131,28 @@ describe('TaskTracker', () => {
 
     expect(await screen.findByRole('progressbar')).toBeVisible();
   });
+  it('should remove the spinner if the user info fetch fails', async () => {
+    vi.mocked(UserInfoService.get).mockRejectedValueOnce({});
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    renderWithRouter(<TaskTracker />);
+
+    expect(await screen.findByRole('progressbar')).not.toBeVisible();
+  });
+  it('should remove the spinner when the user info fetch completes', async () => {
+    mockUserInfo({});
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    renderWithRouter(<TaskTracker />);
+
+    expect(await screen.findByRole('progressbar')).not.toBeVisible();
+  });
   it('should show the profile screen when My Profile menu item is selected', async () => {
     mockUserInfo({ nickname: 'Dave', picture: 'https://example.com' });
     mockAuth0({
