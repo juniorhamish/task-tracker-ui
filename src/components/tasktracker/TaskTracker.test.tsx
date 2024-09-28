@@ -168,6 +168,20 @@ describe('TaskTracker', () => {
 
     expect(await screen.findByRole('heading', { name: 'My Profile' })).toBeVisible();
   });
+  it('should show the home screen when logo is clicked', async () => {
+    mockUserInfo({ nickname: 'Dave', picture: 'https://example.com' });
+    mockAuth0({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { email_verified: true },
+    });
+    const user = userEvent.setup();
+    renderWithRouter(<TaskTracker />, '/profile');
+
+    await user.click(await within(banner()).findByRole('img', { name: 'Task Tracker logo' }));
+
+    expect(await screen.findByText(/Dave/)).toBeVisible();
+  });
   describe('routing', () => {
     it.each(['/home', '/verify', '/profile', '/', '/unknown-route'])(
       'should navigate to the welcome screen if the user is not logged in and navigating directly to the %s route',

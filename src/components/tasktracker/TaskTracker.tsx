@@ -52,6 +52,7 @@ export default function TaskTracker() {
             .catch(async () => await log.error('Error logging out.'));
         }}
         onMyProfile={() => navigate('/profile')}
+        onHome={() => navigate('/')}
         user={userInfo}
       />
       <Routes>

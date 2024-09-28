@@ -7,10 +7,11 @@ interface Props {
   onLogin: () => void;
   onLogout: () => void;
   onMyProfile: () => void;
+  onHome: () => void;
   user?: UserInfo;
 }
 
-export default function TopAppBar({ onLogin, onLogout, onMyProfile, user }: Readonly<Props>) {
+export default function TopAppBar({ onLogin, onLogout, onMyProfile, onHome, user }: Readonly<Props>) {
   const userMenuId = useId();
   const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
   const closeUserMenu = () => {
@@ -20,7 +21,9 @@ export default function TopAppBar({ onLogin, onLogout, onMyProfile, user }: Read
     <AppBar position="static" enableColorOnDark>
       <Toolbar disableGutters sx={{ p: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="Task Tracker logo" />
+          <Button onClick={() => onHome()} sx={{ p: 0, minWidth: 60 }}>
+            <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="Task Tracker logo" />
+          </Button>
         </Box>
         {!user ? (
           <Box>
@@ -63,16 +66,16 @@ export default function TopAppBar({ onLogin, onLogout, onMyProfile, user }: Read
             >
               <MenuItem
                 onClick={() => {
-                  onMyProfile();
                   closeUserMenu();
+                  onMyProfile();
                 }}
               >
                 <Typography textAlign="center">My Profile</Typography>
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  onLogout();
                   closeUserMenu();
+                  onLogout();
                 }}
               >
                 <Typography textAlign="center">Logout</Typography>

@@ -18,6 +18,7 @@ export const LoggedOut: Story = {
     onLogin: fn(),
     onLogout: fn(),
     onMyProfile: fn(),
+    onHome: fn(),
   },
   argTypes: {
     user: {
