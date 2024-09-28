@@ -12,7 +12,7 @@ const FormGrid = styled(Grid2)(() => ({
   flexDirection: 'column',
 }));
 
-export default function MyProfile({ user }: Props) {
+export default function MyProfile({ user }: Readonly<Props>) {
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   if (!user) {

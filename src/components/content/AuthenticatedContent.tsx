@@ -6,7 +6,7 @@ interface Props {
   user?: UserInfo;
 }
 
-export default function AuthenticatedContent({ user }: Props) {
+export default function AuthenticatedContent({ user }: Readonly<Props>) {
   if (!user) {
     return <Navigate to="/" />;
   }

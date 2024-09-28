@@ -10,7 +10,7 @@ interface Props {
   user?: UserInfo;
 }
 
-export default function TopAppBar({ onLogin, onLogout, user }: Props) {
+export default function TopAppBar({ onLogin, onLogout, user }: Readonly<Props>) {
   const navigate = useNavigate();
   const userMenuId = useId();
   const [userMenuAnchorElement, setUserMenuAnchorElement] = useState<null | HTMLElement>(null);
