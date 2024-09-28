@@ -12,8 +12,8 @@ const FormGrid = styled(Grid2)(() => ({
 }));
 
 export default function MyProfile({ user }: Readonly<Props>) {
-  const [firstName, setFirstName] = useState(user?.firstName || '');
-  const [lastName, setLastName] = useState(user?.lastName || '');
+  const [firstName, setFirstName] = useState(user?.firstName ?? '');
+  const [lastName, setLastName] = useState(user?.lastName ?? '');
   return (
     <Box>
       <Typography variant="h2">My Profile</Typography>
