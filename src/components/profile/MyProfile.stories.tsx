@@ -19,7 +19,6 @@ export const Primary: Story = {
       email: 'john@doe.com',
       nickname: 'JD',
       picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
-      emailVerified: true,
     },
   },
 };

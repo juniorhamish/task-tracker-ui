@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia, Grid2, Typography } from '@mui/material';
 import { UserInfo } from '../../gen/client';
 
@@ -7,17 +6,14 @@ interface Props {
 }
 
 export default function AuthenticatedContent({ user }: Readonly<Props>) {
-  if (!user) {
-    return <Navigate to="/" />;
-  }
   return (
     <Grid2 container alignContent="center" justifyContent="center" flexGrow={1}>
       <Grid2>
         <Card variant="outlined">
-          <CardMedia component="img" height="194" image={user.picture} />
+          <CardMedia component="img" height="194" image={user?.picture} />
           <CardContent>
             <Typography variant="h4" gutterBottom>
-              {user.nickname}
+              {user?.nickname}
             </Typography>
           </CardContent>
         </Card>

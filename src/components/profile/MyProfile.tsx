@@ -1,7 +1,6 @@
 import { Avatar, Box, Divider, FormLabel, Grid2, OutlinedInput, Stack, styled, Typography } from '@mui/material';
 import { useState } from 'react';
 import { UserInfo } from '../../gen/client';
-import { Navigate } from 'react-router-dom';
 
 interface Props {
   user?: UserInfo;
@@ -13,18 +12,15 @@ const FormGrid = styled(Grid2)(() => ({
 }));
 
 export default function MyProfile({ user }: Readonly<Props>) {
-  const [firstName, setFirstName] = useState(user?.firstName);
-  const [lastName, setLastName] = useState(user?.lastName);
-  if (!user) {
-    return <Navigate to="/" />;
-  }
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
   return (
     <Box>
       <Typography variant="h2">My Profile</Typography>
       <Divider />
       <Stack spacing={1}>
         <Typography variant="h3">Picture</Typography>
-        <Avatar alt={user.nickname} src={user.picture} />
+        <Avatar alt={user?.nickname} src={user?.picture} />
         <Divider />
         <Typography variant="h3">Name</Typography>
         <Grid2 container spacing={3}>

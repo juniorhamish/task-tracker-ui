@@ -34,6 +34,7 @@ export default [
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/require-default-props': ['off'],
       '@stylistic/multiline-ternary': ['error', 'never'],
+      '@stylistic/jsx-wrap-multilines': ['off'],
     },
   },
   eslintPluginPrettierRecommended,

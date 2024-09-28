@@ -1,14 +1,6 @@
 import { Card, CardContent, Grid2, Typography } from '@mui/material';
-import { Navigate } from 'react-router-dom';
-import { UserInfo } from '../../gen/client';
 
-interface Props {
-  user?: UserInfo;
-}
-export default function Welcome({ user }: Readonly<Props>) {
-  if (user) {
-    return <Navigate to="/home" />;
-  }
+export default function Welcome() {
   return (
     <Grid2 container alignContent="center" justifyContent="center" flexGrow={1}>
       <Card variant="outlined">

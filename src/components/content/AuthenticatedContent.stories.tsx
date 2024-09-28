@@ -14,12 +14,11 @@ export const Primary: Story = {
   },
   args: {
     user: {
-      firstName: 'string',
-      lastName: 'string',
-      nickname: 'string',
-      picture: 'string',
-      email: 'string',
-      emailVerified: true,
+      firstName: 'John',
+      lastName: 'Doe',
+      nickname: 'JD',
+      picture: 'https://gravatar.com/avatar/021aa0a2e9451a61bd130962c9bd36c00f2fb2be154ca5720bbe2089d4cf6053',
+      email: 'johndoe@email.com',
     },
   },
 };
