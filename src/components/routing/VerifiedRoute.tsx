@@ -7,6 +7,6 @@ interface Props {
 }
 
 export default function VerifiedRoute({ children }: Readonly<Props>) {
-  const { isAuthenticated, user } = useAuth0();
-  return isAuthenticated && user?.email_verified ? children : <Navigate to="/" />;
+  const { isAuthenticated, isLoading, user } = useAuth0();
+  return isLoading || (isAuthenticated && user?.email_verified) ? children : <Navigate to="/" />;
 }
