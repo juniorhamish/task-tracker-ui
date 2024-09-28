@@ -5,7 +5,7 @@ import { UserInfo } from '../../gen/client';
 interface Props {
   user?: UserInfo;
 }
-export default function Welcome({ user }: Props) {
+export default function Welcome({ user }: Readonly<Props>) {
   if (user) {
     return <Navigate to="/home" />;
   }

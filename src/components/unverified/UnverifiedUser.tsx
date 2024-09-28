@@ -6,7 +6,7 @@ interface Props {
   verified: boolean;
 }
 
-export default function UnverifiedUser({ loggedIn, verified }: Props) {
+export default function UnverifiedUser({ loggedIn, verified }: Readonly<Props>) {
   if (!loggedIn || verified) {
     return <Navigate to="/" />;
   }
