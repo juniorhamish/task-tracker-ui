@@ -161,6 +161,20 @@ describe('TaskTracker', () => {
         expect(await screen.findByText('Please log in or sign up!')).toBeVisible();
       },
     );
+    it.each(['/home', '/verify', '/profile', '/', '/unknown-route'])(
+      'should navigate to the welcome screen if the user is logged in but no user object is available and navigating directly to the %s route',
+      async () => {
+        mockAuth0({
+          isAuthenticated: true,
+          isLoading: false,
+        });
+
+        renderWithRouter(<TaskTracker />);
+
+        expect(await screen.findByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+        expect(await screen.findByText('Please log in or sign up!')).toBeVisible();
+      },
+    );
     it.each(['/home', '/verify', '/profile', '/'])(
       'should navigate to the verify screen if the user is unverified and navigating directly to the %s route',
       async () => {
@@ -176,6 +190,21 @@ describe('TaskTracker', () => {
         renderWithRouter(<TaskTracker />);
 
         expect(await screen.findByText('Please verify your email address.')).toBeVisible();
+      },
+    );
+    it.each(['/home', '/verify', '/profile', '/'])(
+      'should navigate to the home screen if the user is logged in but no user object is available and navigating directly to the %s route',
+      async () => {
+        mockUserInfo({});
+        mockAuth0({
+          isAuthenticated: true,
+          isLoading: false,
+        });
+
+        renderWithRouter(<TaskTracker />);
+
+        expect(await screen.findByRole('heading', { name: 'Welcome to Task Tracker' })).toBeVisible();
+        expect(await screen.findByText('Please log in or sign up!')).toBeVisible();
       },
     );
     it.each(['/home', '/verify', '/profile', '/'])(

@@ -6,7 +6,7 @@ import Welcome from '../welcome/Welcome.tsx';
 export default function HomeRoute() {
   const { isAuthenticated, user } = useAuth0();
   const userVerified = useMemo(() => isAuthenticated && user?.email_verified, [isAuthenticated, user]);
-  const userUnverified = useMemo(() => isAuthenticated && !user?.email_verified, [isAuthenticated, user]);
+  const userUnverified = useMemo(() => isAuthenticated && user && !user.email_verified, [isAuthenticated, user]);
   let result = <Welcome />;
   if (userVerified) {
     result = <Navigate to="/home" />;

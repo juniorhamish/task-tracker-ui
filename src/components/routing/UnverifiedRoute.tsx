@@ -8,5 +8,5 @@ interface Props {
 
 export default function UnverifiedRoute({ children }: Readonly<Props>) {
   const { isAuthenticated, user } = useAuth0();
-  return isAuthenticated && !user?.email_verified ? children : <Navigate to="/" />;
+  return isAuthenticated && user && !user.email_verified ? children : <Navigate to="/" />;
 }
