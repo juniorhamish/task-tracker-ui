@@ -7,6 +7,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginPromise from 'eslint-plugin-promise';
 import stylistic from '@stylistic/eslint-plugin';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
@@ -21,20 +22,22 @@ export default [
   stylistic.configs.customize({
     semi: true,
     braceStyle: '1tbs',
-    arrowParens: false,
+    arrowParens: true,
   }),
   {
     plugins: {
       'react-refresh': pluginReactRefresh,
       'eslint-comments': pluginEslintComments,
+      'react-hooks': reactHooks,
     },
     rules: {
       'no-console': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/require-default-props': ['off'],
-      '@stylistic/multiline-ternary': ['error', 'never'],
+      '@stylistic/multiline-ternary': ['off'],
       '@stylistic/jsx-wrap-multilines': ['off'],
+      ...reactHooks.configs.recommended.rules,
     },
   },
   eslintPluginPrettierRecommended,

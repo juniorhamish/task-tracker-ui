@@ -13,6 +13,6 @@ export default function LoggingMetaData() {
       };
     }
     log.use(enrichLogs);
-  }, [user, log]);
+  }, [user]);
   return <></>;
 }
