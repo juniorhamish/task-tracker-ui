@@ -20,6 +20,6 @@ export default function Auth0Initializer() {
       return config;
     });
     return () => client.instance.interceptors.request.eject(addAuthorizationHeader);
-  }, [getAccessTokenSilently, getAccessTokenWithPopup, client]);
+  }, [getAccessTokenSilently, getAccessTokenWithPopup]);
   return <></>;
 }
