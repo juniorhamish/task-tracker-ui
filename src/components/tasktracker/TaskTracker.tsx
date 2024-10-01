@@ -58,27 +58,27 @@ export default function TaskTracker() {
       <Routes>
         <Route
           path="/home"
-          element={
+          element={(
             <VerifiedRoute>
               <AuthenticatedContent user={userInfo} />
             </VerifiedRoute>
-          }
+          )}
         />
         <Route
           path="/profile"
-          element={
+          element={(
             <VerifiedRoute>
               <MyProfile user={userInfo} />
             </VerifiedRoute>
-          }
+          )}
         />
         <Route
           path="/verify"
-          element={
+          element={(
             <UnverifiedRoute>
               <UnverifiedUser />
             </UnverifiedRoute>
-          }
+          )}
         />
         <Route path="/" element={<HomeRoute />} />
         <Route path={'/*'} element={<Navigate to="/" />} />
