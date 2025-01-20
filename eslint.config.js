@@ -13,11 +13,11 @@ import pluginJest from 'eslint-plugin-jest';
 
 export default pluginTSESLint.config(
   {
-    ignores: ['dist', 'coverage'],
     settings: { react: { version: 'detect' } },
   },
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    ignores: ['dist/**', 'coverage'],
     languageOptions: {
       parserOptions: {
         projectService: true,
