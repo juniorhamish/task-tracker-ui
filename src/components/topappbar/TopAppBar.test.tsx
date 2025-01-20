@@ -15,10 +15,10 @@ const renderTopAppBar = ({
   render(
     <TopAppBar
       {...props}
-      onLogin={onLogin || vi.fn()}
-      onLogout={onLogout || vi.fn()}
-      onMyProfile={onMyProfile || vi.fn()}
-      onHome={onHome || vi.fn()}
+      onLogin={onLogin ?? vi.fn()}
+      onLogout={onLogout ?? vi.fn()}
+      onMyProfile={onMyProfile ?? vi.fn()}
+      onHome={onHome ?? vi.fn()}
     />,
   );
 

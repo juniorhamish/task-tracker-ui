@@ -17,6 +17,7 @@ export default function TopAppBar({ onLogin, onLogout, onMyProfile, onHome, user
   const closeUserMenu = () => {
     setUserMenuAnchorElement(null);
   };
+
   return (
     <AppBar position="static" enableColorOnDark>
       <Toolbar disableGutters sx={{ p: 1 }}>
@@ -25,66 +26,64 @@ export default function TopAppBar({ onLogin, onLogout, onMyProfile, onHome, user
             <Box sx={{ maxWidth: 60, verticalAlign: 'middle' }} component="img" src={logo} alt="Task Tracker logo" />
           </Button>
         </Box>
-        {!user
-          ? (
-              <Box>
-                <Button
-                  color="inherit"
-                  onClick={() => {
-                    onLogin();
-                  }}
-                >
-                  Login
-                </Button>
-              </Box>
-            )
-          : (
-              <Box sx={{ flexGrow: 0 }}>
-                <IconButton
-                  sx={{ p: 0 }}
-                  onClick={(event) => {
-                    setUserMenuAnchorElement(event.currentTarget);
-                  }}
-                  aria-haspopup
-                  aria-controls={userMenuId}
-                >
-                  <Avatar src={user.picture} alt={user.nickname} />
-                </IconButton>
-                <Menu
-                  id={userMenuId}
-                  sx={{ mt: '45px' }}
-                  open={Boolean(userMenuAnchorElement)}
-                  anchorEl={userMenuAnchorElement}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  onClose={closeUserMenu}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      closeUserMenu();
-                      onMyProfile();
-                    }}
-                  >
-                    <Typography textAlign="center">My Profile</Typography>
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      closeUserMenu();
-                      onLogout();
-                    }}
-                  >
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            )}
+        {!user ? (
+          <Box>
+            <Button
+              color="inherit"
+              onClick={() => {
+                onLogin();
+              }}
+            >
+              Login
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ flexGrow: 0 }}>
+            <IconButton
+              sx={{ p: 0 }}
+              onClick={(event) => {
+                setUserMenuAnchorElement(event.currentTarget);
+              }}
+              aria-haspopup
+              aria-controls={userMenuId}
+            >
+              <Avatar src={user.picture} alt={user.nickname} />
+            </IconButton>
+            <Menu
+              id={userMenuId}
+              sx={{ mt: '45px' }}
+              open={Boolean(userMenuAnchorElement)}
+              anchorEl={userMenuAnchorElement}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              onClose={closeUserMenu}
+            >
+              <MenuItem
+                onClick={() => {
+                  closeUserMenu();
+                  onMyProfile();
+                }}
+              >
+                <Typography textAlign="center">My Profile</Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  closeUserMenu();
+                  onLogout();
+                }}
+              >
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );
