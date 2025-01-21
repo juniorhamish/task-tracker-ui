@@ -28,9 +28,7 @@
   "paths": {
     "/users": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "operationId": "getAll",
         "responses": {
           "200": {
@@ -49,9 +47,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "operationId": "create",
         "requestBody": {
           "content": {
@@ -79,9 +75,7 @@
     },
     "/userinfo": {
       "get": {
-        "tags": [
-          "User Info"
-        ],
+        "tags": ["User Info"],
         "operationId": "get",
         "responses": {
           "200": {
@@ -97,9 +91,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "User Info"
-        ],
+        "tags": ["User Info"],
         "operationId": "update",
         "requestBody": {
           "content": {
@@ -127,9 +119,7 @@
     },
     "/actuator": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator root web endpoint",
         "operationId": "links",
         "responses": {
@@ -176,9 +166,7 @@
     },
     "/actuator/metrics": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator web endpoint 'metrics'",
         "operationId": "metrics",
         "responses": {
@@ -207,9 +195,7 @@
     },
     "/actuator/metrics/{requiredMetricName}": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator web endpoint 'metrics-requiredMetricName'",
         "operationId": "metrics-requiredMetricName",
         "parameters": [
@@ -248,9 +234,7 @@
     },
     "/actuator/info": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator web endpoint 'info'",
         "operationId": "info",
         "responses": {
@@ -279,9 +263,7 @@
     },
     "/actuator/health": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator web endpoint 'health'",
         "operationId": "health",
         "responses": {
@@ -310,9 +292,7 @@
     },
     "/actuator/health/**": {
       "get": {
-        "tags": [
-          "Actuator"
-        ],
+        "tags": ["Actuator"],
         "summary": "Actuator web endpoint 'health-path'",
         "operationId": "health-path",
         "responses": {
@@ -357,13 +337,7 @@
         }
       },
       "UserInfo": {
-        "required": [
-          "email",
-          "firstName",
-          "lastName",
-          "nickname",
-          "picture"
-        ],
+        "required": ["email", "firstName", "lastName", "nickname", "picture"],
         "type": "object",
         "properties": {
           "email": {

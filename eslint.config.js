@@ -7,36 +7,59 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginPromise from 'eslint-plugin-promise';
 import stylistic from '@stylistic/eslint-plugin';
 import reactHooks from 'eslint-plugin-react-hooks';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import vitest from '@vitest/eslint-plugin';
+import pluginJest from 'eslint-plugin-jest';
 
-export default [
-  { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-  { settings: { react: { version: 'detect' } } },
-  { ignores: ['src/vite-env.d.ts', 'dist', 'vitest.config.ts', 'vite.config.ts', 'coverage', '!.storybook'] },
-  pluginJs.configs.recommended,
-  ...pluginTSESLint.configs.strict,
-  pluginReact.configs.flat.recommended,
-  pluginReact.configs.flat['jsx-runtime'],
-  jsxA11y.flatConfigs.recommended,
-  pluginPromise.configs['flat/recommended'],
-  stylistic.configs.customize({
-    semi: true,
-    braceStyle: '1tbs',
-  }),
+export default pluginTSESLint.config(
   {
+    settings: { react: { version: 'detect' } },
+  },
+  {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    ignores: ['dist/**', 'coverage'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    extends: [
+      pluginJs.configs.recommended,
+      pluginTSESLint.configs.recommendedTypeChecked,
+      pluginTSESLint.configs.stylisticTypeChecked,
+      jsxA11y.flatConfigs.recommended,
+      pluginReact.configs.flat.recommended,
+      pluginReact.configs.flat['jsx-runtime'],
+      pluginPromise.configs['flat/recommended'],
+      pluginReactRefresh.configs.vite,
+      eslintConfigPrettier,
+    ],
     plugins: {
-      'react-refresh': pluginReactRefresh,
       'eslint-comments': pluginEslintComments,
       'react-hooks': reactHooks,
-      typescriptEslint,
+      '@stylistic': stylistic,
     },
     rules: {
-      'no-console': 'warn',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      '@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],
-      ...reactHooks.configs.recommended.rules,
+      '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
     },
   },
-  { files: ['**/gen'] },
-  { rules: { '@typescript-eslint/no-extraneous-class': 'off' } },
-];
+  {
+    files: ['**/*.js', '**/*.jsx'],
+    extends: [pluginTSESLint.configs.disableTypeChecked],
+  },
+  {
+    files: ['**/*.test.tsx'], // or any other pattern
+    plugins: {
+      vitest,
+      jest: pluginJest,
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      '@typescript-eslint/unbound-method': 'off',
+      'jest/unbound-method': ['error', { ignoreStatic: true }],
+    },
+  },
+  { files: ['**/*.gen.ts'], rules: { '@typescript-eslint/no-extraneous-class': 'off' } },
+  { files: ['src/logging/LoggingMetaData.tsx'], rules: { '@typescript-eslint/require-await': 'off' } },
+);
