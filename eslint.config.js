@@ -2,7 +2,7 @@ import pluginJs from '@eslint/js';
 import pluginTSESLint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactRefresh from 'eslint-plugin-react-refresh';
-import pluginEslintComments from 'eslint-plugin-eslint-comments';
+import pluginEslintComments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginPromise from 'eslint-plugin-promise';
 import stylistic from '@stylistic/eslint-plugin';
@@ -16,8 +16,10 @@ export default pluginTSESLint.config(
     settings: { react: { version: 'detect' } },
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     ignores: ['dist/**', 'coverage'],
+  },
+  {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -33,15 +35,17 @@ export default pluginTSESLint.config(
       pluginReact.configs.flat['jsx-runtime'],
       pluginPromise.configs['flat/recommended'],
       pluginReactRefresh.configs.vite,
+      stylistic.configs.customize({
+        semi: true,
+        braceStyle: '1tbs',
+      }),
+      reactHooks.configs['recommended-latest'],
+      pluginEslintComments.recommended,
       eslintConfigPrettier,
     ],
-    plugins: {
-      'eslint-comments': pluginEslintComments,
-      'react-hooks': reactHooks,
-      '@stylistic': stylistic,
-    },
     rules: {
       '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+      'prefer-template': 'error',
     },
   },
   {
