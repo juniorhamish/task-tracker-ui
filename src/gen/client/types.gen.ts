@@ -14,31 +14,66 @@ export interface UserInfo {
   picture: string;
 }
 
-export interface Link {
-  href?: string;
-  templated?: boolean;
+export interface GetAllData {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/users';
 }
 
-export type GetAllResponse = User[];
+export interface GetAllResponses {
+  /**
+   * OK
+   */
+  200: User[];
+}
 
-export type GetAllError = unknown;
+export type GetAllResponse = GetAllResponses[keyof GetAllResponses];
 
 export interface CreateData {
   body: User;
+  path?: never;
+  query?: never;
+  url: '/users';
 }
 
-export type CreateResponse = User;
+export interface CreateResponses {
+  /**
+   * Created
+   */
+  201: User;
+}
 
-export type CreateError = unknown;
+export type CreateResponse = CreateResponses[keyof CreateResponses];
 
-export type GetResponse = UserInfo;
+export interface GetData {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/userinfo';
+}
 
-export type GetError = unknown;
+export interface GetResponses {
+  /**
+   * OK
+   */
+  200: UserInfo;
+}
+
+export type GetResponse = GetResponses[keyof GetResponses];
 
 export interface UpdateData {
   body: UserInfo;
+  path?: never;
+  query?: never;
+  url: '/userinfo';
 }
 
-export type UpdateResponse = UserInfo;
+export interface UpdateResponses {
+  /**
+   * OK
+   */
+  200: UserInfo;
+}
 
-export type UpdateError = unknown;
+export type UpdateResponse = UpdateResponses[keyof UpdateResponses];

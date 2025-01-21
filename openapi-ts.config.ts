@@ -1,15 +1,22 @@
-import { defineConfig } from '@hey-api/openapi-ts';
+import { defineConfig, defaultPlugins } from '@hey-api/openapi-ts';
 
 export default defineConfig({
   client: '@hey-api/client-axios',
-  input: 'openapi/task-tracker-openapi-spec.json',
+  input: {
+    exclude: '^(#/components/schemas/Link|#/paths/actuator.*)$',
+    path: 'openapi/task-tracker-openapi-spec.json',
+  },
   output: {
     lint: 'eslint',
+    format: 'prettier',
     path: 'src/gen/client',
   },
-  services: {
-    asClass: true,
-    filter: '^\\w+ /((?!actuator).).*$',
-  },
-  schemas: false,
+  plugins: [
+    ...defaultPlugins,
+    {
+      asClass: true,
+      auth: false,
+      name: '@hey-api/sdk',
+    },
+  ],
 });

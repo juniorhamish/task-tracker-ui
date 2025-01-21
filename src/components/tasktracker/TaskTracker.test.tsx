@@ -10,7 +10,7 @@ import { UserInfo, UserInfoService } from '../../gen/client';
 import { AxiosResponse } from 'axios';
 
 vi.mock('@auth0/auth0-react');
-vi.mock('../../gen/client/services.gen');
+vi.mock('../../gen/client/sdk.gen');
 
 const renderWithRouter = (children: ReactNode, route?: string) =>
   render(<MemoryRouter initialEntries={route ? [route] : undefined}>{children}</MemoryRouter>);
