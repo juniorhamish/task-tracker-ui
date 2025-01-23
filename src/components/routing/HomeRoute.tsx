@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Navigate } from 'react-router-dom';
-import Welcome from '../welcome/Welcome.tsx';
+import Welcome from '../welcome/Welcome';
 
 export default function HomeRoute() {
   const { isAuthenticated, user } = useAuth0();

@@ -1,18 +1,18 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { log } from './Log.ts';
 import { ILogtailLog } from '@logtail/types';
 import { useEffect } from 'react';
+import log from './Log';
 
 export default function LoggingMetaData() {
   const { user } = useAuth0();
   useEffect(() => {
-    async function enrichLogs(log: ILogtailLog): Promise<ILogtailLog> {
+    async function enrichLogs(logEntry: ILogtailLog): Promise<ILogtailLog> {
       return {
-        ...log,
+        ...logEntry,
         user: user?.email,
       };
     }
     log.use(enrichLogs);
   }, [user]);
-  return <></>;
+  return null;
 }

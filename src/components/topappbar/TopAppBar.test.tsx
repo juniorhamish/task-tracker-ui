@@ -1,20 +1,14 @@
 import { render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
+import { ComponentProps } from 'react';
 import TopAppBar from './TopAppBar';
 import { banner, bannerButton } from './TopAppBar.test.helpers';
-import { ComponentProps } from 'react';
 
 const emptyUser = { firstName: '', lastName: '', email: '', nickname: '', picture: '', emailVerified: true };
-const renderTopAppBar = ({
-  onLogin,
-  onLogout,
-  onMyProfile,
-  onHome,
-  ...props
-}: Partial<ComponentProps<typeof TopAppBar>>) =>
+const renderTopAppBar = ({ onLogin, onLogout, onMyProfile, onHome, user }: Partial<ComponentProps<typeof TopAppBar>>) =>
   render(
     <TopAppBar
-      {...props}
+      user={user}
       onLogin={onLogin ?? vi.fn()}
       onLogout={onLogout ?? vi.fn()}
       onMyProfile={onMyProfile ?? vi.fn()}

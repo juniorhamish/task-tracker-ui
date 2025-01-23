@@ -4,10 +4,10 @@ import { Auth0ContextInterface, useAuth0 } from '@auth0/auth0-react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { ReactNode } from 'react';
+import { AxiosResponse } from 'axios';
 import { banner, bannerButton } from '../topappbar/TopAppBar.test.helpers';
 import TaskTracker from './TaskTracker';
 import { UserInfo, UserInfoService } from '../../gen/client';
-import { AxiosResponse } from 'axios';
 
 vi.mock('@auth0/auth0-react');
 vi.mock('../../gen/client/sdk.gen');
