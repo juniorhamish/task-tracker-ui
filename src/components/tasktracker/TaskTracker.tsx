@@ -7,10 +7,10 @@ import UnverifiedUser from '../unverified/UnverifiedUser';
 import AuthenticatedContent from '../content/AuthenticatedContent';
 import MyProfile from '../profile/MyProfile';
 import { UserInfo, UserInfoService } from '../../gen/client';
-import { log } from '../../logging/Log.ts';
-import VerifiedRoute from '../routing/VerifiedRoute.tsx';
-import HomeRoute from '../routing/HomeRoute.tsx';
-import UnverifiedRoute from '../routing/UnverifiedRoute.tsx';
+import log from '../../logging/Log';
+import VerifiedRoute from '../routing/VerifiedRoute';
+import HomeRoute from '../routing/HomeRoute';
+import UnverifiedRoute from '../routing/UnverifiedRoute';
 
 export default function TaskTracker() {
   const { loginWithPopup, isAuthenticated, isLoading, user, logout } = useAuth0();
@@ -21,7 +21,7 @@ export default function TaskTracker() {
     if (isAuthenticated && user) {
       const retrieveUserInfo = async () => {
         setIsLoadingUserInfo(true);
-        const data = (await UserInfoService.get()).data;
+        const { data } = await UserInfoService.get();
         await log.info('Got user info.', { userInfo: data });
         setUserInfo(data);
         setIsLoadingUserInfo(false);
@@ -43,13 +43,13 @@ export default function TaskTracker() {
       <TopAppBar
         onLogin={() => {
           loginWithPopup()
-            .then(async () => await log.info('Successfully logged in.'))
-            .catch(async () => await log.error('Error logging in.'));
+            .then(async () => log.info('Successfully logged in.'))
+            .catch(async () => log.error('Error logging in.'));
         }}
         onLogout={() => {
           logout({ logoutParams: { returnTo: window.location.origin } })
-            .then(async () => await log.info('Successfully logged out.'))
-            .catch(async () => await log.error('Error logging out.'));
+            .then(async () => log.info('Successfully logged out.'))
+            .catch(async () => log.error('Error logging out.'));
         }}
         onMyProfile={() => navigate('/profile')}
         onHome={() => navigate('/')}
