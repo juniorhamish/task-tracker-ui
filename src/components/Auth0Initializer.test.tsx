@@ -20,12 +20,14 @@ describe('request headers', () => {
     setRequestHeader = vi.fn();
     const xhrMock: Partial<XMLHttpRequest> = {
       open: vi.fn(),
-      send: Promise.resolve,
+      send: () => {
+        // @ts-expect-error this works, just make typescript be quiet
+        xhrMock.onloadend();
+      },
       setRequestHeader,
     };
     vi.spyOn(window, 'XMLHttpRequest').mockImplementation(() => xhrMock as XMLHttpRequest);
     vi.spyOn(client, 'setConfig');
-    vi.spyOn(log, 'error');
   });
   afterEach(() => {
     vi.resetAllMocks();
@@ -47,6 +49,7 @@ describe('request headers', () => {
     await UserInfoService.get();
 
     expect(setRequestHeader).toHaveBeenCalledWith('Authorization', 'Bearer Token From Popup');
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(log.error).toHaveBeenCalledWith('Failed to get token silently.', error);
   });
   it('should set the base URL', async () => {

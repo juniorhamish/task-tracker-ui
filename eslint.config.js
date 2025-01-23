@@ -6,7 +6,9 @@ import pluginJs from '@eslint/js';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactRefresh from 'eslint-plugin-react-refresh';
 import pluginPromise from 'eslint-plugin-promise';
-import reactHooks from 'eslint-plugin-react-hooks';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+// eslint-disable-next-line import/no-unresolved
+import pluginTypescriptESLint from 'typescript-eslint';
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -23,6 +25,14 @@ export default [
   pluginJs.configs.recommended,
   pluginEslintComments.recommended,
   pluginReact.configs.flat.recommended,
+  ...pluginTypescriptESLint.config({
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      pluginTypescriptESLint.configs.recommendedTypeChecked,
+      pluginTypescriptESLint.configs.stylisticTypeChecked,
+    ],
+    rules: { '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }] },
+  }),
   // Add the AirBnB rules
   ...compat.extends('airbnb'),
   // Apply these rules only to typescript files
@@ -31,7 +41,7 @@ export default [
   pluginReact.configs.flat['jsx-runtime'],
   pluginReactRefresh.configs.vite,
   pluginPromise.configs['flat/recommended'],
-  reactHooks.configs['recommended-latest'],
+  pluginReactHooks.configs['recommended-latest'],
   // This should always be last so that it disables any rules that contradict with prettier
   ...compat.extends('prettier'),
   {
