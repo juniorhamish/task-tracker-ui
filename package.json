@@ -24,7 +24,7 @@
     "@auth0/auth0-react": "^2.2.4",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@hey-api/client-axios": "^0.2.12",
+    "@hey-api/client-axios": "^0.9.1",
     "@logtail/browser": "^0.5.2",
     "@logtail/types": "^0.5.2",
     "@mui/icons-material": "^6.4.0",
